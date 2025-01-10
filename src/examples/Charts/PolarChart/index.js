@@ -16,7 +16,7 @@ import SoftTypography from "./components/SoftTypography";
 // PolarChart configurations
 import configs from "./examples/Charts/PolarChart/configs";
 
-function PolarChart({ title, description, chart }) {
+function PolarChart({ title="", description="", chart }) {
   const { data, options } = configs(chart.labels || [], chart.datasets || {});
 
   const renderChart = (
@@ -48,12 +48,6 @@ function PolarChart({ title, description, chart }) {
 
   return title || description ? <Card>{renderChart}</Card> : renderChart;
 }
-
-// Setting default values for the props of PolarChart
-PolarChart.defaultProps = {
-  title: "",
-  description: "",
-};
 
 // Typechecking props for the PolarChart
 PolarChart.propTypes = {

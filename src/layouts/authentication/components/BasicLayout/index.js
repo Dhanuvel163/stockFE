@@ -15,7 +15,7 @@ import PageLayout from "../../../../examples/LayoutContainers/PageLayout";
 // Authentication layout components
 import Footer from "../Footer";
 
-function BasicLayout({ title, description, image, children }) {
+function BasicLayout({ title="", description="", image, children }) {
   return (
     <PageLayout>
       <DefaultNavbar transparent light/>
@@ -47,7 +47,7 @@ function BasicLayout({ title, description, image, children }) {
         </Grid>
       </SoftBox>
       <SoftBox mt={{ xs: -26, lg: -30 }} mb={6} px={1} width="calc(100% - 2rem)" mx="auto">
-        <Grid spacing={1} justifyContent="center" maxWidth={600} mx="auto">
+        <Grid justifyContent="center" maxWidth={600} mx="auto">
           <Grid item xs={11} sm={9} md={5} lg={4} xl={3}>
             {children}
           </Grid>
@@ -56,12 +56,6 @@ function BasicLayout({ title, description, image, children }) {
     </PageLayout>
   );
 }
-
-// Setting default values for the props of BasicLayout
-BasicLayout.defaultProps = {
-  title: "",
-  description: "",
-};
 
 // Typechecking props for the BasicLayout
 BasicLayout.propTypes = {

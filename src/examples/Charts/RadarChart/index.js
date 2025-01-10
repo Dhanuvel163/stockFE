@@ -22,7 +22,7 @@ import colors from "./assets/theme/base/colors";
 // Soft UI Dashboard React helper functions
 import rgba from "./assets/theme/functions/rgba";
 
-function RadarChart({ title, description, chart }) {
+function RadarChart({ title="", description="", chart }) {
   const chartDatasets = chart.datasets
     ? chart.datasets.map((dataset) => ({
         ...dataset,
@@ -63,12 +63,6 @@ function RadarChart({ title, description, chart }) {
 
   return title || description ? <Card>{renderChart}</Card> : renderChart;
 }
-
-// Setting default values for the props of RadarChart
-RadarChart.defaultProps = {
-  title: "",
-  description: "",
-};
 
 // Typechecking props for the RadarChart
 RadarChart.propTypes = {

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 // Soft UI Dashboard React base styles
 import colors from "../../assets/theme/base/colors";
 
-function Document({ color, size }) {
+function Document({ color="dark", size="16px" }) {
   return (
     <svg
       width={size}
@@ -40,12 +40,6 @@ function Document({ color, size }) {
     </svg>
   );
 }
-
-// Setting default values for the props of Document
-Document.defaultProps = {
-  color: "dark",
-  size: "16px",
-};
 
 // Typechecking props for the Document
 Document.propTypes = {

@@ -15,7 +15,7 @@ import PageLayout from "../../../../examples/LayoutContainers/PageLayout";
 // Authentication layout components
 import Footer from "../Footer";
 
-function CoverLayout({ color, header, title, description, image, top, children }) {
+function CoverLayout({ color="info", header="", title="", description="", image, top=20, children }) {
   return (
     <PageLayout background="white">
       <DefaultNavbar/>
@@ -52,15 +52,6 @@ function CoverLayout({ color, header, title, description, image, top, children }
     </PageLayout>
   );
 }
-
-// Setting default values for the props of CoverLayout
-CoverLayout.defaultProps = {
-  header: "",
-  title: "",
-  description: "",
-  color: "info",
-  top: 20,
-};
 
 // Typechecking props for the CoverLayout
 CoverLayout.propTypes = {

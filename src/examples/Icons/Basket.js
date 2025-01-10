@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 // Soft UI Dashboard React base styles
 import colors from "./assets/theme/base/colors";
 
-function Basket({ color, size }) {
+function Basket({ color="dark", size="16px" }) {
   return (
     <svg
       width={size}
@@ -40,12 +40,6 @@ function Basket({ color, size }) {
     </svg>
   );
 }
-
-// Setting default values for the props of Basket
-Basket.defaultProps = {
-  color: "dark",
-  size: "16px",
-};
 
 // Typechecking props for the Basket
 Basket.propTypes = {

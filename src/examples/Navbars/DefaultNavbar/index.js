@@ -22,7 +22,7 @@ import DefaultNavbarMobile from "../../../examples/Navbars/DefaultNavbar/Default
 // Soft UI Dashboard React base styles
 import breakpoints from "../../../assets/theme/base/breakpoints";
 
-function DefaultNavbar({ transparent, light, action }) {
+function DefaultNavbar({ transparent=false, light=false, action=false }) {
   const [mobileNavbar, setMobileNavbar] = useState(false);
   const [mobileView, setMobileView] = useState(false);
 
@@ -103,13 +103,6 @@ function DefaultNavbar({ transparent, light, action }) {
     </Container>
   );
 }
-
-// Setting default values for the props of DefaultNavbar
-DefaultNavbar.defaultProps = {
-  transparent: false,
-  light: false,
-  action: false,
-};
 
 // Typechecking props for the DefaultNavbar
 DefaultNavbar.propTypes = {
