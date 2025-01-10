@@ -18,23 +18,9 @@ import Footer from "../Footer";
 function BasicLayout({ title, description, image, children }) {
   return (
     <PageLayout>
-      <DefaultNavbar
-        action={{
-          type: "external",
-          route: "https://creative-tim.com/product/soft-ui-dashboard-react",
-          label: "free download",
-        }}
-        transparent
-        light
-      />
+      <DefaultNavbar transparent light/>
       <SoftBox
-        width="calc(100% - 2rem)"
-        minHeight="50vh"
-        borderRadius="lg"
-        mx={2}
-        my={2}
-        pt={6}
-        pb={28}
+        width="calc(100% - 2rem)" minHeight="50vh" borderRadius="lg" mx={2} my={2} pt={6} pb={28}
         sx={{
           backgroundImage: ({ functions: { linearGradient, rgba }, palette: { gradients } }) =>
             image &&
@@ -42,9 +28,7 @@ function BasicLayout({ title, description, image, children }) {
               rgba(gradients.dark.main, 0.6),
               rgba(gradients.dark.state, 0.6)
             )}, url(${image})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat",
         }}
       >
         <Grid container spacing={3} justifyContent="center" sx={{ textAlign: "center" }}>
@@ -62,14 +46,13 @@ function BasicLayout({ title, description, image, children }) {
           </Grid>
         </Grid>
       </SoftBox>
-      <SoftBox mt={{ xs: -26, lg: -24 }} px={1} width="calc(100% - 2rem)" mx="auto">
-        <Grid container spacing={1} justifyContent="center">
+      <SoftBox mt={{ xs: -26, lg: -30 }} mb={6} px={1} width="calc(100% - 2rem)" mx="auto">
+        <Grid spacing={1} justifyContent="center" maxWidth={600} mx="auto">
           <Grid item xs={11} sm={9} md={5} lg={4} xl={3}>
             {children}
           </Grid>
         </Grid>
       </SoftBox>
-      <Footer />
     </PageLayout>
   );
 }

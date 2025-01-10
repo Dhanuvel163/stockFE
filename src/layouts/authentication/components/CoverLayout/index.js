@@ -18,22 +18,8 @@ import Footer from "../Footer";
 function CoverLayout({ color, header, title, description, image, top, children }) {
   return (
     <PageLayout background="white">
-      <DefaultNavbar
-        action={{
-          type: "external",
-          route: "https://creative-tim.com/product/soft-ui-dashboard-react",
-          label: "free download",
-          color: "dark",
-        }}
-      />
-      <Grid
-        container
-        justifyContent="center"
-        sx={{
-          minHeight: "75vh",
-          margin: 0,
-        }}
-      >
+      <DefaultNavbar/>
+      <Grid container justifyContent="center" sx={{minHeight: "75vh", margin: 0}}>
         <Grid item xs={11} sm={8} md={5} xl={3}>
           <SoftBox mt={top}>
             <SoftBox pt={3} px={3}>
@@ -57,30 +43,12 @@ function CoverLayout({ color, header, title, description, image, top, children }
         </Grid>
         <Grid item xs={12} md={5}>
           <SoftBox
-            height="100%"
-            display={{ xs: "none", md: "block" }}
-            position="relative"
-            right={{ md: "-12rem", xl: "-16rem" }}
-            mr={-16}
-            sx={{
-              transform: "skewX(-10deg)",
-              overflow: "hidden",
-              borderBottomLeftRadius: ({ borders: { borderRadius } }) => borderRadius.lg,
-            }}
-          >
-            <SoftBox
-              ml={-8}
-              height="100%"
-              sx={{
-                backgroundImage: `url(${image})`,
-                backgroundSize: "cover",
-                transform: "skewX(10deg)",
-              }}
-            />
+            height="100%" display={{ xs: "none", md: "block" }} position="relative" right={{ md: "-12rem", xl: "-16rem" }} mr={-16}
+            sx={{ transform: "skewX(-10deg)", overflow: "hidden", borderBottomLeftRadius: ({ borders: { borderRadius } }) => borderRadius.lg}}>
+            <SoftBox ml={-8} height="100%" sx={{backgroundImage: `url(${image})`, backgroundSize: "cover", transform: "skewX(10deg)"}}/>
           </SoftBox>
         </Grid>
       </Grid>
-      <Footer />
     </PageLayout>
   );
 }

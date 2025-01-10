@@ -20,59 +20,65 @@ import Separator from "../components/Separator";
 
 // Images
 import curved6 from "../../../assets/images/curved-images/curved14.jpg";
+import { Grid } from "@mui/material";
 
 function SignUp() {
-  const [agreement, setAgremment] = useState(true);
-
-  const handleSetAgremment = () => setAgremment(!agreement);
-
   return (
     <BasicLayout
       title="Welcome!"
-      description="Use these awesome forms to login or create new account in your project for free."
+      description="Register with us to manage your stocks efficiently"
       image={curved6}
     >
       <Card>
-        <SoftBox p={3} mb={1} textAlign="center">
-          <SoftTypography variant="h5" fontWeight="medium">
-            Register with
-          </SoftTypography>
-        </SoftBox>
-        <SoftBox mb={2}>
-          <Socials />
-        </SoftBox>
-        <Separator />
-        <SoftBox pt={2} pb={3} px={3}>
+        <SoftBox py={3} px={3}>
           <SoftBox component="form" role="form">
-            <SoftBox mb={2}>
-              <SoftInput placeholder="Name" />
-            </SoftBox>
-            <SoftBox mb={2}>
-              <SoftInput type="email" placeholder="Email" />
-            </SoftBox>
-            <SoftBox mb={2}>
-              <SoftInput type="password" placeholder="Password" />
-            </SoftBox>
-            <SoftBox display="flex" alignItems="center">
-              <Checkbox checked={agreement} onChange={handleSetAgremment} />
-              <SoftTypography
-                variant="button"
-                fontWeight="regular"
-                onClick={handleSetAgremment}
-                sx={{ cursor: "poiner", userSelect: "none" }}
-              >
-                &nbsp;&nbsp;I agree the&nbsp;
-              </SoftTypography>
-              <SoftTypography
-                component="a"
-                href="#"
-                variant="button"
-                fontWeight="bold"
-                textGradient
-              >
-                Terms and Conditions
-              </SoftTypography>
-            </SoftBox>
+            <Grid container spacing={3} sx={{ textAlign: "center" }}>
+              <Grid item xs={12} lg={6}>
+                <SoftBox>
+                  <SoftInput placeholder="Name"/>
+                </SoftBox>
+              </Grid>
+              <Grid item xs={12} lg={6}>
+                <SoftBox>
+                  <SoftInput type="email" placeholder="Email" />
+                </SoftBox>
+              </Grid>
+              <Grid item xs={12} lg={6}>
+                <SoftBox>
+                  <SoftInput type="text" placeholder="Bill Id Prefix" />
+                </SoftBox>
+              </Grid>
+              <Grid item xs={12} lg={6}>
+                <SoftBox>
+                  <SoftInput type="text" placeholder="Gstin" />
+                </SoftBox>
+              </Grid>
+              <Grid item xs={12} lg={6}>
+                <SoftBox>
+                  <SoftInput type="text" placeholder="Drug License No" />
+                </SoftBox>
+              </Grid>
+              <Grid item xs={12} lg={6}>
+                <SoftBox>
+                  <SoftInput type="text" placeholder="Food License No" />
+                </SoftBox>
+              </Grid>
+              <Grid item xs={12} lg={6}>
+                <SoftBox>
+                  <SoftInput type="number" placeholder="Contact" />
+                </SoftBox>
+              </Grid>
+              <Grid item xs={12} lg={6}>
+                <SoftBox>
+                  <SoftInput type="text" placeholder="Address" />
+                </SoftBox>
+              </Grid>
+              <Grid item xs={10} lg={12}>
+                <SoftBox>
+                  <SoftInput type="password" placeholder="Password" />
+                </SoftBox>
+              </Grid>
+            </Grid>
             <SoftBox mt={4} mb={1}>
               <SoftButton variant="gradient" color="dark" fullWidth>
                 sign up
@@ -81,14 +87,7 @@ function SignUp() {
             <SoftBox mt={3} textAlign="center">
               <SoftTypography variant="button" color="text" fontWeight="regular">
                 Already have an account?&nbsp;
-                <SoftTypography
-                  component={Link}
-                  to="/authentication/sign-in"
-                  variant="button"
-                  color="dark"
-                  fontWeight="bold"
-                  textGradient
-                >
+                <SoftTypography component={Link} to="/authentication/sign-in" variant="button" color="dark" fontWeight="bold" textGradient>
                   Sign in
                 </SoftTypography>
               </SoftTypography>

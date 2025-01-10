@@ -57,20 +57,9 @@ function DefaultNavbar({ transparent, light, action }) {
   return (
     <Container>
       <SoftBox
-        py={1.5}
-        px={{ xs: transparent ? 4 : 5, sm: transparent ? 2 : 5, lg: transparent ? 0 : 5 }}
-        my={2}
-        mx={3}
-        width="calc(100% - 48px)"
-        borderRadius="section"
-        shadow={transparent ? "none" : "md"}
-        color={light ? "white" : "dark"}
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        position="absolute"
-        left={0}
-        zIndex={3}
+        py={1.5} px={{ xs: transparent ? 4 : 5, sm: transparent ? 2 : 5, lg: transparent ? 0 : 5 }} my={2} mx={3} 
+        width="calc(100% - 48px)" borderRadius="section" shadow={transparent ? "none" : "md"} color={light ? "white" : "dark"}
+        display="flex" justifyContent="space-between" alignItems="center" position="absolute" left={0} zIndex={3}
         sx={({ palette: { transparent: transparentColor, white }, functions: { rgba } }) => ({
           backgroundColor: transparent ? transparentColor.main : rgba(white.main, 0.8),
           backdropFilter: transparent ? "none" : `saturate(200%) blur(30px)`,
@@ -78,64 +67,35 @@ function DefaultNavbar({ transparent, light, action }) {
       >
         <SoftBox component={Link} to="/" py={transparent ? 1.5 : 0.75} lineHeight={1}>
           <SoftTypography variant="button" fontWeight="bold" color={light ? "white" : "dark"}>
-            Soft UI Dashboard
+            StockM
           </SoftTypography>
         </SoftBox>
         <SoftBox color="inherit" display={{ xs: "none", lg: "flex" }} m={0} p={0}>
-          <DefaultNavbarLink icon="donut_large" name="dashboard" route="/dashboard" light={light} />
-          <DefaultNavbarLink icon="person" name="profile" route="/profile" light={light} />
-          <DefaultNavbarLink
-            icon="account_circle"
-            name="sign up"
-            route="/authentication/sign-up"
-            light={light}
-          />
-          <DefaultNavbarLink
-            icon="key"
-            name="sign in"
-            route="/authentication/sign-in"
-            light={light}
-          />
+          <DefaultNavbarLink icon="account_circle" name="sign up" route="/authentication/sign-up" light={light}/>
+          <DefaultNavbarLink icon="key" name="sign in" route="/authentication/sign-in" light={light}/>
         </SoftBox>
         {action &&
           (action.type === "internal" ? (
             <SoftBox display={{ xs: "none", lg: "inline-block" }}>
               <SoftButton
-                component={Link}
-                to={action.route}
-                variant="gradient"
-                color={action.color ? action.color : "info"}
-                size="small"
-                circular
-              >
+                component={Link} to={action.route} size="small" circular
+                variant="gradient" color={action.color ? action.color : "info"}>
                 {action.label}
               </SoftButton>
             </SoftBox>
           ) : (
             <SoftBox display={{ xs: "none", lg: "inline-block" }}>
               <SoftButton
-                component="a"
-                href={action.route}
-                target="_blank"
-                rel="noreferrer"
-                variant="gradient"
-                color={action.color ? action.color : "info"}
-                size="small"
-                circular
-              >
+                component="a" href={action.route} size="small" circular
+                target="_blank" rel="noreferrer" variant="gradient"
+                color={action.color ? action.color : "info"}>
                 {action.label}
               </SoftButton>
             </SoftBox>
           ))}
         <SoftBox
-          display={{ xs: "inline-block", lg: "none" }}
-          lineHeight={0}
-          py={1.5}
-          pl={1.5}
-          color="inherit"
-          sx={{ cursor: "pointer" }}
-          onClick={openMobileNavbar}
-        >
+          display={{ xs: "inline-block", lg: "none" }} lineHeight={0}
+          py={1.5} pl={1.5} color="inherit" sx={{ cursor: "pointer" }} onClick={openMobileNavbar}>
           <Icon fontSize="default">{mobileNavbar ? "close" : "menu"}</Icon>
         </SoftBox>
       </SoftBox>
