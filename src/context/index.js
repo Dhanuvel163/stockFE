@@ -1,8 +1,3 @@
-/**
-  This file is used for controlling the global states of the components,
-  you can customize the states for the different components here.
-*/
-
 import { createContext, useContext, useReducer, useMemo } from "react";
 
 // prop-types is a library for typechecking of props
@@ -41,6 +36,9 @@ function reducer(state, action) {
     case "LAYOUT": {
       return { ...state, layout: action.value };
     }
+    case "LOADER": {
+      return { ...state, loader: action.value };
+    }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -58,6 +56,7 @@ function SoftUIControllerProvider({ children }) {
     openConfigurator: false,
     direction: "ltr",
     layout: "dashboard",
+    loader: false
   };
 
   const [controller, dispatch] = useReducer(reducer, initialState);
@@ -92,6 +91,7 @@ const setFixedNavbar = (dispatch, value) => dispatch({ type: "FIXED_NAVBAR", val
 const setOpenConfigurator = (dispatch, value) => dispatch({ type: "OPEN_CONFIGURATOR", value });
 const setDirection = (dispatch, value) => dispatch({ type: "DIRECTION", value });
 const setLayout = (dispatch, value) => dispatch({ type: "LAYOUT", value });
+const setLoader = (dispatch, value) => dispatch({ type: "LOADER", value });
 
 export {
   SoftUIControllerProvider,
@@ -104,4 +104,5 @@ export {
   setOpenConfigurator,
   setDirection,
   setLayout,
+  setLoader
 };
