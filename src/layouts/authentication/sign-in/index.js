@@ -18,11 +18,13 @@ import { useSnackbar } from 'react-simple-snackbar'
 import { error, success } from "../../../util/snackbar";
 import { useNavigate } from "react-router-dom";
 import { useSoftUIController, setLoader } from "../../../context";
+import { useUserController, setLogin } from "../../../context/user";
 
 function SignIn() {
   const [openErrorSnackbar, closeErrorSnackbar] = useSnackbar(error)
   const [openSuccessSnackbar, closeSuccessSnackbar] = useSnackbar(success)
   const [controller, dispatch] = useSoftUIController();
+  const [userController, userDispatch] = useUserController();
   const navigate = useNavigate();
   const {register, handleSubmit, watch, formState: { errors }} = useForm()
 
@@ -31,6 +33,7 @@ function SignIn() {
     try {
       let response = await call_api("POST","organization/login",{},data)
       if(response.data?.success){
+        setLogin(userDispatch, response.data?.organization);
         openSuccessSnackbar("Logged In Successfully")
         navigate("/dashboard");
       }else openErrorSnackbar(response.data?.error)

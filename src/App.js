@@ -28,6 +28,7 @@ import routes from "./routes";
 
 // Soft UI Dashboard React contexts
 import { useSoftUIController, setMiniSidenav, setOpenConfigurator, setLoader } from "./context";
+import { useUserController } from "./context/user";
 
 // Images
 import brand from "./assets/images/logo-ct.png";
@@ -35,7 +36,9 @@ import { Backdrop, CircularProgress } from "@mui/material";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
+  const [userController, userDispatch] = useUserController();
   const { miniSidenav, direction, layout, openConfigurator, sidenavColor, loader } = controller;
+  const { isLoggedIn } = userController;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
@@ -80,6 +83,16 @@ export default function App() {
     allRoutes.map((route) => {
       if(route.collapse) return getRoutes(route.collapse);
       if(route.route) return <Route exact path={route.route} element={route.component} key={route.key} />;
+      if(route.privateroute){
+        return (
+          <Route exact path={route.privateroute} key={route.key} element={isLoggedIn ? route.component : <Navigate to="/authentication/sign-in"/>}></Route>
+        );
+      }
+      if(route.authprivateroute){
+        return (
+          <Route exact path={route.authprivateroute} key={route.key} element={!isLoggedIn ? route.component : <Navigate to="/dashboard"/>}></Route>
+        );
+      }
       return null;
     });
 

@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
-import Checkbox from "@mui/material/Checkbox";
 
 // Soft UI Dashboard React components
 import SoftBox from "../../../components/SoftBox";
@@ -13,8 +12,6 @@ import SoftButton from "../../../components/SoftButton";
 
 // Authentication layout components
 import BasicLayout from "../components/BasicLayout";
-import Socials from "../components/Socials";
-import Separator from "../components/Separator";
 
 // Images
 import curved6 from "../../../assets/images/curved-images/curved14.jpg";
