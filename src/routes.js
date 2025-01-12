@@ -35,6 +35,7 @@ import Document from "./examples/Icons/Document";
 import SpaceShip from "./examples/Icons/SpaceShip";
 import CustomerSupport from "./examples/Icons/CustomerSupport";
 import CreditCard from "./examples/Icons/CreditCard";
+import Salesman from "./layouts/salesman";
 
 const routes = [
   {
@@ -53,6 +54,15 @@ const routes = [
     route: "/brands",
     icon: <Office size="12px" />,
     component: <Brands />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Salesman",
+    key: "salesman",
+    route: "/salesman",
+    icon: <Office size="12px" />,
+    component: <Salesman />,
     noCollapse: true,
   },
   {
