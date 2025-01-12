@@ -1,29 +1,17 @@
-// @mui material components
 import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
-
-// Soft UI Dashboard React components
 import SoftBox from "../../components/SoftBox";
 import SoftTypography from "../../components/SoftTypography";
-
-// Soft UI Dashboard React examples
 import DashboardLayout from "../../examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "../../examples/Navbars/DashboardNavbar";
-import Footer from "../../examples/Footer";
 import MiniStatisticsCard from "../../examples/Cards/StatisticsCards/MiniStatisticsCard";
 import ReportsBarChart from "../../examples/Charts/BarCharts/ReportsBarChart";
 import GradientLineChart from "../../examples/Charts/LineCharts/GradientLineChart";
-
-// Soft UI Dashboard React base styles
 import typography from "../../assets/theme/base/typography";
-
-// Dashboard layout components
 import BuildByDevelopers from "./components/BuildByDevelopers";
 import WorkWithTheRockets from "./components/WorkWithTheRockets";
 import Projects from "./components/Projects";
 import OrderOverview from "./components/OrderOverview";
-
-// Data
 import reportsBarChartData from "./data/reportsBarChartData";
 import gradientLineChartData from "./data/gradientLineChartData";
 
@@ -137,7 +125,6 @@ function Dashboard() {
           </Grid>
         </Grid>
       </SoftBox>
-      <Footer />
     </DashboardLayout>
   );
 }
