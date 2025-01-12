@@ -6,11 +6,16 @@ function reducer(state, action) {
   switch (action.type) {
     case "LOGIN": {
       localStorage.setItem('organization',JSON.stringify(action.value))
+      localStorage.setItem('token',action.token)
       return { ...state, isLoggedIn: true, organization: action.value };
     }
     case "LOGOUT": {
       localStorage.removeItem('organization')
+      localStorage.removeItem('token')
       return { ...state, isLoggedIn: false, organization: null };
+    }
+    case "LIST_BRANDS": {
+      return { ...state, brands: action.value };
     }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
@@ -19,11 +24,13 @@ function reducer(state, action) {
 }
 
 let organization = localStorage.getItem('organization') || null
+let token = localStorage.getItem('token') || null
 if(organization) organization = JSON.parse(organization)
 function UserControllerProvider({ children }) {
   const initialState = {
-    isLoggedIn: !!organization,
+    isLoggedIn: !!organization && !!token,
     organization: organization,
+    brands: []
   };
   const [controller, dispatch] = useReducer(reducer, initialState);
   const value = useMemo(() => [controller, dispatch], [controller, dispatch]);
@@ -42,12 +49,14 @@ UserControllerProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const setLogin = (dispatch, value) => dispatch({ type: "LOGIN", value });
+const setLogin = (dispatch, value, token) => dispatch({ type: "LOGIN", value, token });
 const setLogout = (dispatch) => dispatch({ type: "LOGOUT" });
+const listBrands = (dispatch, value) => dispatch({ type: "LIST_BRANDS", value });
 
 export {
   UserControllerProvider,
   useUserController,
   setLogin,
-  setLogout
+  setLogout,
+  listBrands
 };

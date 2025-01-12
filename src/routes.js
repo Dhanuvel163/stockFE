@@ -22,6 +22,7 @@
 // Soft UI Dashboard React layouts
 import Dashboard from "./layouts/dashboard";
 import Tables from "./layouts/tables";
+import Brands from "./layouts/brands";
 import Billing from "./layouts/billing";
 import Profile from "./layouts/profile";
 import SignIn from "./layouts/authentication/sign-in";
@@ -43,6 +44,15 @@ const routes = [
     privateroute: "/dashboard",
     icon: <Shop size="12px" />,
     component: <Dashboard />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Brands",
+    key: "brands",
+    route: "/brands",
+    icon: <Office size="12px" />,
+    component: <Brands />,
     noCollapse: true,
   },
   {

@@ -33,7 +33,7 @@ function SignIn() {
     try {
       let response = await call_api("POST","organization/login",{},data)
       if(response.data?.success){
-        setLogin(userDispatch, response.data?.organization);
+        setLogin(userDispatch, response.data?.organization, response.data?.token);
         openSuccessSnackbar("Logged In Successfully")
         navigate("/dashboard");
       }else openErrorSnackbar(response.data?.error)
