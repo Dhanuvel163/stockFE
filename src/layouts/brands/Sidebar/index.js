@@ -30,8 +30,11 @@ function BrandConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
         </Icon>
       </SoftBox>
       <Divider/>
-      <SoftBox component="form" role="form" onSubmit={handleSubmit(onSubmit)} mt={1}>
+      <SoftBox component="form" role="form" onSubmit={handleSubmit(onSubmit)}>
         <SoftBox mb={1}>
+          <SoftBox mb={1} ml={0.5}>
+            <SoftTypography component="label" variant="caption" fontWeight="bold">Brand Name</SoftTypography>
+          </SoftBox>
           <SoftInput type="text" placeholder="Brand Name"
             {...register("name", { required: "Brand name is required" })} 
             error={!!errors.name}/>

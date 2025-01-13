@@ -119,7 +119,7 @@ function SignUp() {
               <Grid item xs={12} lg={6}>
                 <SoftBox>
                   <SoftInput type="number" placeholder="Contact" 
-                    {...register("contact", { required: "Contact No is required", maxLength: { value: 10, message: "Only 10 digits allowed" }, minLength: { value: 10, message: "Only 10 digits allowed" } })} 
+                    {...register("contact", { required: "Contact No is required", maxLength: { value: 10, message: "Only 10 digits allowed" }, minLength: { value: 10, message: "Only 10 digits allowed" }, min: {value:0,message:"Min value allowed is 0"} })} 
                     error={!!errors.contact}/>
                   <SoftTypography color="error" fontSize={10} mt={1}>
                     <span>{errors.contact?.message}</span>
@@ -128,21 +128,21 @@ function SignUp() {
               </Grid>
               <Grid item xs={12} lg={6}>
                 <SoftBox>
-                  <SoftInput type="text" placeholder="Address" 
-                    {...register("address", { required: "Address is required" })} 
-                    error={!!errors.address}/>
-                  <SoftTypography color="error" fontSize={10} mt={1}>
-                    <span>{errors.address?.message}</span>
-                  </SoftTypography>
-                </SoftBox>
-              </Grid>
-              <Grid item xs={12} lg={12}>
-                <SoftBox>
                   <SoftInput type="password" placeholder="Password" 
                     {...register("password", { required: "Password is required" })} 
                     error={!!errors.password}/>
                   <SoftTypography color="error" fontSize={10} mt={1}>
                     <span>{errors.password?.message}</span>
+                  </SoftTypography>
+                </SoftBox>
+              </Grid>
+              <Grid item xs={12} lg={12}>
+                <SoftBox>
+                  <SoftInput type="text" placeholder="Address" multiline rows={3}
+                    {...register("address", { required: "Address is required" })} 
+                    error={!!errors.address}/>
+                  <SoftTypography color="error" fontSize={10} mt={1}>
+                    <span>{errors.address?.message}</span>
                   </SoftTypography>
                 </SoftBox>
               </Grid>

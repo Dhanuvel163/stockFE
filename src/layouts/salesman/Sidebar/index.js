@@ -31,8 +31,11 @@ function SalesConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
         </Icon>
       </SoftBox>
       <Divider/>
-      <SoftBox component="form" role="form" onSubmit={handleSubmit(onSubmit)} mt={1}>
+      <SoftBox component="form" role="form" onSubmit={handleSubmit(onSubmit)}>
         <SoftBox mb={1}>
+          <SoftBox mb={1} ml={0.5}>
+            <SoftTypography component="label" variant="caption" fontWeight="bold">Name</SoftTypography>
+          </SoftBox>
           <SoftInput type="text" placeholder="Name"
             {...register("name", { required: "Name is required" })} 
             error={!!errors.name}/>
@@ -41,8 +44,11 @@ function SalesConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
           </SoftTypography>
         </SoftBox>
         <SoftBox mb={1}>
+          <SoftBox mb={1} ml={0.5}>
+            <SoftTypography component="label" variant="caption" fontWeight="bold">Contact</SoftTypography>
+          </SoftBox>
           <SoftInput type="number" placeholder="Contact"
-            {...register("contact", { required: "Contact is required", maxLength: { value: 10, message: "Only 10 digits allowed" }, minLength: { value: 10, message: "Only 10 digits allowed" } })} 
+            {...register("contact", { required: "Contact is required", maxLength: { value: 10, message: "Only 10 digits allowed" }, minLength: { value: 10, message: "Only 10 digits allowed" }, min: {value: 0, message: "Min value allowed is 0"} })} 
             error={!!errors.contact}/>
           <SoftTypography color="error" fontSize={10} mt={1}>
             <span>{errors.contact?.message}</span>

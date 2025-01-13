@@ -26,6 +26,9 @@ function reducer(state, action) {
     case "LIST_SUPER_STOCKERS": {
       return { ...state, super_stockers: action.value };
     }
+    case "LIST_PRODUCTS": {
+      return { ...state, products: action.value };
+    }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -42,7 +45,8 @@ function UserControllerProvider({ children }) {
     brands: [],
     salesman: [],
     shops: [],
-    super_stockers: []
+    super_stockers: [],
+    products: []
   };
   const [controller, dispatch] = useReducer(reducer, initialState);
   const value = useMemo(() => [controller, dispatch], [controller, dispatch]);
@@ -67,6 +71,7 @@ const listBrands = (dispatch, value) => dispatch({ type: "LIST_BRANDS", value })
 const listSalesman = (dispatch, value) => dispatch({ type: "LIST_SALESMAN", value });
 const listShops = (dispatch, value) => dispatch({ type: "LIST_SHOPS", value });
 const listSuperStockers = (dispatch, value) => dispatch({ type: "LIST_SUPER_STOCKERS", value });
+const listProducts = (dispatch, value) => dispatch({ type: "LIST_PRODUCTS", value });
 
 export {
   UserControllerProvider,
@@ -76,5 +81,6 @@ export {
   listBrands,
   listSalesman,
   listShops,
-  listSuperStockers
+  listSuperStockers,
+  listProducts
 };

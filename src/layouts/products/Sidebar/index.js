@@ -1,0 +1,163 @@
+import { Divider, Icon } from "@mui/material";
+import SoftBox from "../../../components/SoftBox";
+import SoftTypography from "../../../components/SoftTypography";
+import ConfiguratorRoot from "../../../examples/Configurator/ConfiguratorRoot";
+import SoftInput from "../../../components/SoftInput";
+import { useForm, Controller } from "react-hook-form"
+import SoftButton from "../../../components/SoftButton";
+import { useEffect } from "react";
+import { useUserController } from "../../../context/user";
+import Select from 'react-select'
+
+function ProductConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data}}) {
+  const {register, handleSubmit, watch, formState: { errors }, setValue, reset, control} = useForm()
+  const [userController, userDispatch] = useUserController();
+  const {brands} = userController
+
+  useEffect(()=>{
+    if(isEdit && data){
+      if(data?.name) setValue('name',data?.name)
+      if(data?.hsn_code) setValue('hsn_code',data?.hsn_code)
+      if(data?.mrp) setValue('mrp',data?.mrp)
+      if(data?.rate) setValue('rate',data?.rate)
+      if(data?.cgst_percent) setValue('cgst_percent',data?.cgst_percent)
+      if(data?.sgst_percent) setValue('sgst_percent',data?.sgst_percent)
+      if(data?.profit_percent) setValue('profit_percent',data?.profit_percent)
+      if(data?.rate_with_gst) setValue('rate_with_gst',data?.rate_with_gst)
+      if(data?.brand) setValue('brand',{label:data?.brand.name,value:data?.brand._id})
+    }
+  },[data])
+  useEffect(()=>{
+    if(!isOpen) reset({name:'',hsn_code:'',mrp:'',rate:'',cgst_percent:'',sgst_percent:'',profit_percent:'',rate_with_gst:'',brand:''})
+  },[isOpen])
+  return (
+    <ConfiguratorRoot variant="permanent" ownerState={{ openConfigurator:isOpen }}>
+      <SoftBox display="flex" justifyContent="space-between" alignItems="baseline" pt={3} pb={0.8} px={3}>
+        <SoftBox>
+          <SoftTypography variant="h5">{isEdit ? "Edit" : "Add"} Product</SoftTypography>
+        </SoftBox>
+        <Icon
+          sx={({ typography: { size, fontWeightBold }, palette: { dark } }) => ({ fontSize: `${size.md} !important`, fontWeight: `${fontWeightBold} !important`, stroke: dark.main, strokeWidth: "2px", cursor: "pointer", mt: 2})}
+          onClick={handleClose}>
+          close
+        </Icon>
+      </SoftBox>
+      <Divider/>
+      <SoftBox component="form" role="form" onSubmit={handleSubmit(onSubmit)}>
+        <SoftBox mb={1}>
+          <SoftBox mb={1} ml={0.5}>
+            <SoftTypography component="label" variant="caption" fontWeight="bold">Name</SoftTypography>
+          </SoftBox>
+          <SoftInput type="text" placeholder="Name"
+            {...register("name", { required: "Name is required" })} 
+            error={!!errors.name}/>
+          <SoftTypography color="error" fontSize={10} mt={1}>
+            <span>{errors.name?.message}</span>
+          </SoftTypography>
+        </SoftBox>
+        <SoftBox mb={1}>
+          <SoftBox mb={1} ml={0.5}>
+            <SoftTypography component="label" variant="caption" fontWeight="bold">Brand</SoftTypography>
+          </SoftBox>
+          <Controller name="brand" control={control}
+            render={({ field }) => (
+              <Select placeholder="Brand"
+                styles={{
+                  control: (baseStyles, state) => ({...baseStyles, borderRadius: '0.5rem', border: '0.0625rem solid #d2d6da', fontSize: '0.875rem', fontWeight: '400', color: '#495057'}),
+                  option: (baseStyles, state) => ({...baseStyles, fontSize: '0.875rem', fontWeight: '400'}),
+                }}
+                options={brands.map((brand)=>({value: brand._id, label: brand.name}))} 
+                {...field}/>
+            )}
+            rules={{required: true}}
+          />
+          <SoftTypography color="error" fontSize={10} mt={1}>
+            <span>{errors.brand?.message}</span>
+          </SoftTypography>
+        </SoftBox>
+        <SoftBox mb={1}>
+          <SoftBox mb={1} ml={0.5}>
+            <SoftTypography component="label" variant="caption" fontWeight="bold">HSN Code</SoftTypography>
+          </SoftBox>
+          <SoftInput type="text" placeholder="HSN Code"
+            {...register("hsn_code", { required: "HSN Code is required" })} 
+            error={!!errors.hsn_code}/>
+          <SoftTypography color="error" fontSize={10} mt={1}>
+            <span>{errors.hsn_code?.message}</span>
+          </SoftTypography>
+        </SoftBox>
+        <SoftBox mb={1}>
+          <SoftBox mb={1} ml={0.5}>
+            <SoftTypography component="label" variant="caption" fontWeight="bold">MRP</SoftTypography>
+          </SoftBox>
+          <SoftInput type="number" placeholder="MRP" inputProps={{step: "any"}}
+            {...register("mrp", { required: "MRP is required", min: {value:0, message: "Min value allowed is 0"} })} 
+            error={!!errors.mrp}/>
+          <SoftTypography color="error" fontSize={10} mt={1}>
+            <span>{errors.mrp?.message}</span>
+          </SoftTypography>
+        </SoftBox>
+        <SoftBox mb={1}>
+          <SoftBox mb={1} ml={0.5}>
+            <SoftTypography component="label" variant="caption" fontWeight="bold">Rate</SoftTypography>
+          </SoftBox>
+          <SoftInput type="number" placeholder="Rate" inputProps={{step: "any"}}
+            {...register("rate", { required: "Rate is required", min: {value:0, message: "Min value allowed is 0"} })} 
+            error={!!errors.rate}/>
+          <SoftTypography color="error" fontSize={10} mt={1}>
+            <span>{errors.rate?.message}</span>
+          </SoftTypography>
+        </SoftBox>
+        <SoftBox mb={1}>
+          <SoftBox mb={1} ml={0.5}>
+            <SoftTypography component="label" variant="caption" fontWeight="bold">CGST Percent</SoftTypography>
+          </SoftBox>
+          <SoftInput type="text" placeholder="CGST Percent" inputProps={{step: "any"}}
+            {...register("cgst_percent", { required: "CGST Percent is required", min: {value:0, message: "Min value allowed is 0"}, max: {value:100, message: "Max value allowed is 100"} })} 
+            error={!!errors.cgst_percent}/>
+          <SoftTypography color="error" fontSize={10} mt={1}>
+            <span>{errors.cgst_percent?.message}</span>
+          </SoftTypography>
+        </SoftBox>
+        <SoftBox mb={1}>
+          <SoftBox mb={1} ml={0.5}>
+            <SoftTypography component="label" variant="caption" fontWeight="bold">SGST Percent</SoftTypography>
+          </SoftBox>
+          <SoftInput type="text" placeholder="SGST Percent" inputProps={{step: "any"}}
+            {...register("sgst_percent", { required: "SGST Percent is required", min: {value:0, message: "Min value allowed is 0"}, max: {value:100, message: "Max value allowed is 100"}})} 
+            error={!!errors.sgst_percent}/>
+          <SoftTypography color="error" fontSize={10} mt={1}>
+            <span>{errors.sgst_percent?.message}</span>
+          </SoftTypography>
+        </SoftBox>
+        <SoftBox mb={1}>
+          <SoftBox mb={1} ml={0.5}>
+            <SoftTypography component="label" variant="caption" fontWeight="bold">Profit Percent</SoftTypography>
+          </SoftBox>
+          <SoftInput type="text" placeholder="Profit Percent" inputProps={{step: "any"}}
+            {...register("profit_percent", { required: "Profit Percent is required", min: {value:0, message: "Min value allowed is 0"}, max: {value:100, message: "Max value allowed is 100"} })} 
+            error={!!errors.profit_percent}/>
+          <SoftTypography color="error" fontSize={10} mt={1}>
+            <span>{errors.profit_percent?.message}</span>
+          </SoftTypography>
+        </SoftBox>
+        <SoftBox mb={1}>
+          <SoftBox mb={1} ml={0.5}>
+            <SoftTypography component="label" variant="caption" fontWeight="bold">Rate With Gst</SoftTypography>
+          </SoftBox>
+          <SoftInput type="text" placeholder="Rate With Gst" inputProps={{step: "any"}}
+            {...register("rate_with_gst", { required: "Rate With Gst is required", min: {value:0, message: "Min value allowed is 0"} })} 
+            error={!!errors.rate_with_gst}/>
+          <SoftTypography color="error" fontSize={10} mt={1}>
+            <span>{errors.rate_with_gst?.message}</span>
+          </SoftTypography>
+        </SoftBox>
+        <SoftBox mt={2} mb={1}>
+          <SoftButton variant="gradient" color="info" type="submit" fullWidth>{isEdit ? "Edit" : "Add"}</SoftButton>
+        </SoftBox>
+      </SoftBox>
+    </ConfiguratorRoot>
+  );
+}
+
+export default ProductConfigurator;

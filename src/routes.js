@@ -42,6 +42,8 @@ import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import AppsIcon from '@mui/icons-material/Apps';
+import Products from "./layouts/products";
 
 const routes = [
   {
@@ -87,6 +89,15 @@ const routes = [
     route: "/super-stocker",
     icon: <Inventory2Icon size="12px" />,
     component: <SuperStocker />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Products",
+    key: "products",
+    route: "/products",
+    icon: <AppsIcon size="12px" />,
+    component: <Products />,
     noCollapse: true,
   },
   // {

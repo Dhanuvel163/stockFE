@@ -31,8 +31,11 @@ function SuperStockerConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEd
         </Icon>
       </SoftBox>
       <Divider/>
-      <SoftBox component="form" role="form" onSubmit={handleSubmit(onSubmit)} mt={1}>
+      <SoftBox component="form" role="form" onSubmit={handleSubmit(onSubmit)}>
         <SoftBox mb={1}>
+          <SoftBox mb={1} ml={0.5}>
+            <SoftTypography component="label" variant="caption" fontWeight="bold">Name</SoftTypography>
+          </SoftBox>
           <SoftInput type="text" placeholder="Name"
             {...register("name", { required: "Name is required" })} 
             error={!!errors.name}/>
@@ -41,7 +44,10 @@ function SuperStockerConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEd
           </SoftTypography>
         </SoftBox>
         <SoftBox mb={1}>
-          <SoftInput type="text" placeholder="Address"
+          <SoftBox mb={1} ml={0.5}>
+            <SoftTypography component="label" variant="caption" fontWeight="bold">Address</SoftTypography>
+          </SoftBox>
+          <SoftInput type="text" placeholder="Address" multiline rows={3}
             {...register("address", { required: "Address is required" })} 
             error={!!errors.address}/>
           <SoftTypography color="error" fontSize={10} mt={1}>
