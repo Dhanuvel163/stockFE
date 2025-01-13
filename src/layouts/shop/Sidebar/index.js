@@ -7,22 +7,26 @@ import { useForm } from "react-hook-form"
 import SoftButton from "../../../components/SoftButton";
 import { useEffect } from "react";
 
-function SalesConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data}}) {
+function ShopConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data}}) {
   const {register, handleSubmit, watch, formState: { errors }, setValue, reset} = useForm()
   useEffect(()=>{
     if(isEdit && data){
       if(data?.name) setValue('name',data?.name)
+      if(data?.gstin) setValue('gstin',data?.gstin)
+      if(data?.drug_license_no) setValue('drug_license_no',data?.drug_license_no)
+      if(data?.food_license_no) setValue('food_license_no',data?.food_license_no)
       if(data?.contact) setValue('contact',data?.contact)
+      if(data?.address) setValue('address',data?.address)
     }
   },[data])
   useEffect(()=>{
-    if(!isOpen) reset({name:'',contact:''})
+    if(!isOpen) reset({name:'',gstin:'',drug_license_no:'',food_license_no:'',contact:'',address:''})
   },[isOpen])
   return (
     <ConfiguratorRoot variant="permanent" ownerState={{ openConfigurator:isOpen }}>
       <SoftBox display="flex" justifyContent="space-between" alignItems="baseline" pt={3} pb={0.8} px={3}>
         <SoftBox>
-          <SoftTypography variant="h5">{isEdit ? "Edit" : "Add"} Salesman</SoftTypography>
+          <SoftTypography variant="h5">{isEdit ? "Edit" : "Add"} Shop</SoftTypography>
         </SoftBox>
         <Icon
           sx={({ typography: { size, fontWeightBold }, palette: { dark } }) => ({ fontSize: `${size.md} !important`, fontWeight: `${fontWeightBold} !important`, stroke: dark.main, strokeWidth: "2px", cursor: "pointer", mt: 2})}
@@ -41,11 +45,43 @@ function SalesConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
           </SoftTypography>
         </SoftBox>
         <SoftBox mb={1}>
+          <SoftInput type="text" placeholder="Gstin"
+            {...register("gstin", { required: "Gstin is required", pattern: { value: /^\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}$/, message: "Please enter a valid Gstin" } })} 
+            error={!!errors.gstin}/>
+          <SoftTypography color="error" fontSize={10} mt={1}>
+            <span>{errors.gstin?.message}</span>
+          </SoftTypography>
+        </SoftBox>
+        <SoftBox mb={1}>
+          <SoftInput type="text" placeholder="Drug License Number"
+            {...register("drug_license_no", { required: "Drug License Number is required" })} 
+            error={!!errors.drug_license_no}/>
+          <SoftTypography color="error" fontSize={10} mt={1}>
+            <span>{errors.drug_license_no?.message}</span>
+          </SoftTypography>
+        </SoftBox>
+        <SoftBox mb={1}>
+          <SoftInput type="text" placeholder="Food License Number"
+            {...register("food_license_no", { required: "Food License Number is required" })} 
+            error={!!errors.food_license_no}/>
+          <SoftTypography color="error" fontSize={10} mt={1}>
+            <span>{errors.food_license_no?.message}</span>
+          </SoftTypography>
+        </SoftBox>
+        <SoftBox mb={1}>
           <SoftInput type="number" placeholder="Contact"
             {...register("contact", { required: "Contact is required", maxLength: { value: 10, message: "Only 10 digits allowed" }, minLength: { value: 10, message: "Only 10 digits allowed" } })} 
             error={!!errors.contact}/>
           <SoftTypography color="error" fontSize={10} mt={1}>
             <span>{errors.contact?.message}</span>
+          </SoftTypography>
+        </SoftBox>
+        <SoftBox mb={1}>
+          <SoftInput type="text" placeholder="Address"
+            {...register("address", { required: "Address is required" })} 
+            error={!!errors.address}/>
+          <SoftTypography color="error" fontSize={10} mt={1}>
+            <span>{errors.address?.message}</span>
           </SoftTypography>
         </SoftBox>
         <SoftBox mt={2} mb={1}>
@@ -57,4 +93,4 @@ function SalesConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
   );
 }
 
-export default SalesConfigurator;
+export default ShopConfigurator;

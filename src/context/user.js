@@ -20,6 +20,9 @@ function reducer(state, action) {
     case "LIST_SALESMAN": {
       return { ...state, salesman: action.value };
     }
+    case "LIST_SHOPS": {
+      return { ...state, shops: action.value };
+    }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -34,7 +37,8 @@ function UserControllerProvider({ children }) {
     isLoggedIn: !!organization && !!token,
     organization: organization,
     brands: [],
-    salesman: []
+    salesman: [],
+    shops: []
   };
   const [controller, dispatch] = useReducer(reducer, initialState);
   const value = useMemo(() => [controller, dispatch], [controller, dispatch]);
@@ -57,6 +61,7 @@ const setLogin = (dispatch, value, token) => dispatch({ type: "LOGIN", value, to
 const setLogout = (dispatch) => dispatch({ type: "LOGOUT" });
 const listBrands = (dispatch, value) => dispatch({ type: "LIST_BRANDS", value });
 const listSalesman = (dispatch, value) => dispatch({ type: "LIST_SALESMAN", value });
+const listShops = (dispatch, value) => dispatch({ type: "LIST_SHOPS", value });
 
 export {
   UserControllerProvider,
@@ -64,5 +69,6 @@ export {
   setLogin,
   setLogout,
   listBrands,
-  listSalesman
+  listSalesman,
+  listShops
 };
