@@ -37,6 +37,11 @@ import CustomerSupport from "./examples/Icons/CustomerSupport";
 import CreditCard from "./examples/Icons/CreditCard";
 import Salesman from "./layouts/salesman";
 import ShopPage from "./layouts/shop";
+import SuperStocker from "./layouts/superstocker";
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
+import Inventory2Icon from '@mui/icons-material/Inventory2';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
 
 const routes = [
   {
@@ -53,7 +58,7 @@ const routes = [
     name: "Brands",
     key: "brands",
     route: "/brands",
-    icon: <Office size="12px" />,
+    icon: <AccountTreeIcon size="12px" />,
     component: <Brands />,
     noCollapse: true,
   },
@@ -62,7 +67,7 @@ const routes = [
     name: "Salesman",
     key: "salesman",
     route: "/salesman",
-    icon: <Office size="12px" />,
+    icon: <DirectionsRunIcon size="12px" />,
     component: <Salesman />,
     noCollapse: true,
   },
@@ -71,28 +76,37 @@ const routes = [
     name: "Shop",
     key: "shop",
     route: "/shop",
-    icon: <Office size="12px" />,
+    icon: <ShoppingBasketIcon size="12px" />,
     component: <ShopPage />,
     noCollapse: true,
   },
   {
     type: "collapse",
-    name: "Tables",
-    key: "tables",
-    route: "/tables",
-    icon: <Office size="12px" />,
-    component: <Tables />,
+    name: "Super Stocker",
+    key: "super-stocker",
+    route: "/super-stocker",
+    icon: <Inventory2Icon size="12px" />,
+    component: <SuperStocker />,
     noCollapse: true,
   },
-  {
-    type: "collapse",
-    name: "Billing",
-    key: "billing",
-    route: "/billing",
-    icon: <CreditCard size="12px" />,
-    component: <Billing />,
-    noCollapse: true,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Tables",
+  //   key: "tables",
+  //   route: "/tables",
+  //   icon: <Office size="12px" />,
+  //   component: <Tables />,
+  //   noCollapse: true,
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "Billing",
+  //   key: "billing",
+  //   route: "/billing",
+  //   icon: <CreditCard size="12px" />,
+  //   component: <Billing />,
+  //   noCollapse: true,
+  // },
   { type: "title", title: "Account Pages", key: "account-pages" },
   {
     type: "collapse",
