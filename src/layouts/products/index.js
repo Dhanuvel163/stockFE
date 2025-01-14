@@ -13,15 +13,18 @@ import { listProducts, useUserController, listBrands } from "../../context/user"
 import SoftTypography from "../../components/SoftTypography";
 import { Icon } from "@mui/material";
 import ProductConfigurator from "./Sidebar";
+import SoftInput from "../../components/SoftInput";
+import Select from 'react-select'
 
 function Products() {
   const [drawer,setDrawer] = useState(false)
   const [drawerData,setDrawerData] = useState({isEdit:false,data:null})
   const [controller, dispatch] = useSoftUIController();
   const [userController, userDispatch] = useUserController();
-  const {products} = userController
+  const {products,brands} = userController
   const [openErrorSnackbar, closeErrorSnackbar] = useSnackbar(error)
   const [openSuccessSnackbar, closeSuccessSnackbar] = useSnackbar(success)
+  const [search,setSearch] = useState({name:null,brand:null})
 
   const onSubmit = async(data) => {
     if(data.brand){
@@ -56,7 +59,7 @@ function Products() {
   const getProducts = async() => {
     setLoader(dispatch, true);
     try {
-      let response = await call_api("POST","getProducts/",{},{})
+      let response = await call_api("POST","getProducts/",{},search)
       if(response.data?.success){
         listProducts(userDispatch, response.data?.data);
       }else openErrorSnackbar(response.data?.error)
@@ -103,10 +106,25 @@ function Products() {
       <SoftButton shadow={"true"} color="info" mt={1} variant="gradient" onClick={()=>{setDrawerData({isEdit:false,data:null});setDrawer(true)}}>
         Add Products
       </SoftButton>
-      <SoftBox py={3}>
-      
+      <SoftBox py={3} display="flex" alignItems="center" gap={1}>
+        <SoftInput
+          placeholder="Search by name..."
+          icon={{ component: "search", direction: "left" }}
+          onChange={(e)=>{setSearch((prev)=>({...prev,name:e.target.value}))}}
+        />
+        <Select placeholder="Brand"
+          styles={{
+            control: (baseStyles, state) => ({...baseStyles, borderRadius: '0.5rem', border: '0.0625rem solid #d2d6da', fontSize: '0.875rem', fontWeight: '400', color: '#495057', minWidth:200}),
+            option: (baseStyles, state) => ({...baseStyles, fontSize: '0.875rem', fontWeight: '400'}),
+          }}
+          options={[{value:null,label:'-- All --'},...brands.map((brand)=>({value: brand._id, label: brand.name}))]} 
+          onChange={(e)=>{setSearch((prev)=>({...prev,brand:e.value}))}}
+        />
+        <SoftButton shadow={"true"} color="dark" mt={1} variant="gradient" onClick={()=>{getProducts()}}>
+          Search
+        </SoftButton>
       </SoftBox>
-      <SoftBox py={3}>
+      <SoftBox pb={3}>
         <SoftBox mb={3}>
           <Card>
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
