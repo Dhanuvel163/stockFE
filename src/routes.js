@@ -44,17 +44,19 @@ import Inventory2Icon from '@mui/icons-material/Inventory2';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import AppsIcon from '@mui/icons-material/Apps';
 import Products from "./layouts/products";
+import Purchase from "./layouts/purchase";
+import Shop2Icon from '@mui/icons-material/Shop2';
 
 const routes = [
-  {
-    type: "collapse",
-    name: "Dashboard",
-    key: "dashboard",
-    privateroute: "/dashboard",
-    icon: <Shop size="12px" />,
-    component: <Dashboard />,
-    noCollapse: true,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Dashboard",
+  //   key: "dashboard",
+  //   privateroute: "/dashboard",
+  //   icon: <Shop size="12px" />,
+  //   component: <Dashboard />,
+  //   noCollapse: true,
+  // },
   {
     type: "collapse",
     name: "Brands",
@@ -98,6 +100,15 @@ const routes = [
     route: "/products",
     icon: <AppsIcon size="12px" />,
     component: <Products />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Purchase",
+    key: "purchase",
+    route: "/purchase",
+    icon: <Shop2Icon size="12px" />,
+    component: <Purchase />,
     noCollapse: true,
   },
   // {

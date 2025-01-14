@@ -57,7 +57,7 @@ export default function App() {
       }
       if(route.authprivateroute){
         return (
-          <Route exact path={route.authprivateroute} key={route.key} element={!isLoggedIn ? route.component : <Navigate to="/dashboard"/>}></Route>
+          <Route exact path={route.authprivateroute} key={route.key} element={!isLoggedIn ? route.component : <Navigate to="/brands"/>}></Route>
         );
       }
       return null;

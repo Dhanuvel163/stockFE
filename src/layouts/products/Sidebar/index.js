@@ -63,13 +63,13 @@ function ProductConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,da
             render={({ field }) => (
               <Select placeholder="Brand"
                 styles={{
-                  control: (baseStyles, state) => ({...baseStyles, borderRadius: '0.5rem', border: '0.0625rem solid #d2d6da', fontSize: '0.875rem', fontWeight: '400', color: '#495057'}),
+                  control: (baseStyles, state) => ({...baseStyles, borderRadius: '0.5rem', border: `0.0625rem solid ${!!errors.brand ? '#fd5c70' :'#d2d6da'}`, fontSize: '0.875rem', fontWeight: '400', color: '#495057'}),
                   option: (baseStyles, state) => ({...baseStyles, fontSize: '0.875rem', fontWeight: '400'}),
                 }}
                 options={brands.map((brand)=>({value: brand._id, label: brand.name}))} 
                 {...field}/>
             )}
-            rules={{required: true}}
+            rules={{required: {value:true, message: "Brand is required"}}}
           />
           <SoftTypography color="error" fontSize={10} mt={1}>
             <span>{errors.brand?.message}</span>
@@ -112,7 +112,7 @@ function ProductConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,da
           <SoftBox mb={1} ml={0.5}>
             <SoftTypography component="label" variant="caption" fontWeight="bold">CGST Percent</SoftTypography>
           </SoftBox>
-          <SoftInput type="text" placeholder="CGST Percent" inputProps={{step: "any"}}
+          <SoftInput type="number" placeholder="CGST Percent" inputProps={{step: "any"}}
             {...register("cgst_percent", { required: "CGST Percent is required", min: {value:0, message: "Min value allowed is 0"}, max: {value:100, message: "Max value allowed is 100"} })} 
             error={!!errors.cgst_percent}/>
           <SoftTypography color="error" fontSize={10} mt={1}>
@@ -123,7 +123,7 @@ function ProductConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,da
           <SoftBox mb={1} ml={0.5}>
             <SoftTypography component="label" variant="caption" fontWeight="bold">SGST Percent</SoftTypography>
           </SoftBox>
-          <SoftInput type="text" placeholder="SGST Percent" inputProps={{step: "any"}}
+          <SoftInput type="number" placeholder="SGST Percent" inputProps={{step: "any"}}
             {...register("sgst_percent", { required: "SGST Percent is required", min: {value:0, message: "Min value allowed is 0"}, max: {value:100, message: "Max value allowed is 100"}})} 
             error={!!errors.sgst_percent}/>
           <SoftTypography color="error" fontSize={10} mt={1}>
@@ -134,7 +134,7 @@ function ProductConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,da
           <SoftBox mb={1} ml={0.5}>
             <SoftTypography component="label" variant="caption" fontWeight="bold">Profit Percent</SoftTypography>
           </SoftBox>
-          <SoftInput type="text" placeholder="Profit Percent" inputProps={{step: "any"}}
+          <SoftInput type="number" placeholder="Profit Percent" inputProps={{step: "any"}}
             {...register("profit_percent", { required: "Profit Percent is required", min: {value:0, message: "Min value allowed is 0"}, max: {value:100, message: "Max value allowed is 100"} })} 
             error={!!errors.profit_percent}/>
           <SoftTypography color="error" fontSize={10} mt={1}>
@@ -145,7 +145,7 @@ function ProductConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,da
           <SoftBox mb={1} ml={0.5}>
             <SoftTypography component="label" variant="caption" fontWeight="bold">Rate With Gst</SoftTypography>
           </SoftBox>
-          <SoftInput type="text" placeholder="Rate With Gst" inputProps={{step: "any"}}
+          <SoftInput type="number" placeholder="Rate With Gst" inputProps={{step: "any"}}
             {...register("rate_with_gst", { required: "Rate With Gst is required", min: {value:0, message: "Min value allowed is 0"} })} 
             error={!!errors.rate_with_gst}/>
           <SoftTypography color="error" fontSize={10} mt={1}>
