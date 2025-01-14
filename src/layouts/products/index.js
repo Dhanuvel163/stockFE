@@ -56,7 +56,7 @@ function Products() {
   const getProducts = async() => {
     setLoader(dispatch, true);
     try {
-      let response = await call_api("GET","product/",{},{})
+      let response = await call_api("POST","getProducts/",{},{})
       if(response.data?.success){
         listProducts(userDispatch, response.data?.data);
       }else openErrorSnackbar(response.data?.error)
@@ -103,6 +103,9 @@ function Products() {
       <SoftButton shadow={"true"} color="info" mt={1} variant="gradient" onClick={()=>{setDrawerData({isEdit:false,data:null});setDrawer(true)}}>
         Add Products
       </SoftButton>
+      <SoftBox py={3}>
+      
+      </SoftBox>
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Card>
