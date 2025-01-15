@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 export default styled(Drawer)(({ theme, ownerState }) => {
   const { boxShadows, functions, transitions } = theme;
   const { openConfigurator } = ownerState;
-  const configuratorWidth = '70vw';
+  const configuratorWidth = 'calc(100vw)';
   const { lg } = boxShadows;
   const { pxToRem } = functions;
 
@@ -22,7 +22,7 @@ export default styled(Drawer)(({ theme, ownerState }) => {
   // drawer styles when openConfigurator={false}
   const drawerCloseStyles = () => ({
     left: "initial",
-    right: "-70vw",
+    right: "-100vw",
     transition: transitions.create("all", {
       easing: transitions.easing.sharp,
       duration: transitions.duration.short,
