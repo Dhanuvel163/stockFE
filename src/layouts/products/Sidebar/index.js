@@ -5,15 +5,15 @@ import ConfiguratorRoot from "../../../examples/Configurator/ConfiguratorRoot";
 import SoftInput from "../../../components/SoftInput";
 import { useForm, Controller } from "react-hook-form"
 import SoftButton from "../../../components/SoftButton";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useUserController } from "../../../context/user";
 import Select from 'react-select'
 
 function ProductConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data}}) {
-  const {register, handleSubmit, watch, formState: { errors }, setValue, reset, control} = useForm()
+  const {register, handleSubmit, watch, formState: { errors }, setValue, reset, control, getValues} = useForm()
   const [userController, userDispatch] = useUserController();
   const {brands} = userController
-
+  const [sellRate,setSellRate] = useState(null)
   useEffect(()=>{
     if(isEdit && data){
       if(data?.name) setValue('name',data?.name)
@@ -101,9 +101,22 @@ function ProductConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,da
           <SoftBox mb={1} ml={0.5}>
             <SoftTypography component="label" variant="caption" fontWeight="bold">Rate</SoftTypography>
           </SoftBox>
-          <SoftInput type="number" placeholder="Rate" inputProps={{step: "any"}}
-            {...register("rate", { required: "Rate is required", min: {value:0, message: "Min value allowed is 0"} })} 
-            error={!!errors.rate}/>
+          <Controller control={control} name="rate"
+            rules={{ required: "Rate is required", min: {value:0, message: "Min value allowed is 0"} }}
+            render={({ field }) => (
+              <SoftInput {...field} type="number" placeholder="Rate" inputProps={{step: "any"}} error={!!errors.rate}
+                value={field.value || ''}
+                onChange={(e)=>{
+                  const value = parseFloat(e.target.value)
+                  let {cgst_percent,sgst_percent,rate_with_gst} = getValues()
+                  if(cgst_percent && sgst_percent && value){
+                    rate_with_gst = value + (value*(cgst_percent/100)) + (value*(sgst_percent/100))
+                    setValue('rate_with_gst',rate_with_gst)
+                  }
+                  field.onChange(e)
+                }}/>
+            )}
+          />
           <SoftTypography color="error" fontSize={10} mt={1}>
             <span>{errors.rate?.message}</span>
           </SoftTypography>
@@ -112,9 +125,22 @@ function ProductConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,da
           <SoftBox mb={1} ml={0.5}>
             <SoftTypography component="label" variant="caption" fontWeight="bold">CGST Percent</SoftTypography>
           </SoftBox>
-          <SoftInput type="number" placeholder="CGST Percent" inputProps={{step: "any"}}
-            {...register("cgst_percent", { required: "CGST Percent is required", min: {value:0, message: "Min value allowed is 0"}, max: {value:100, message: "Max value allowed is 100"} })} 
-            error={!!errors.cgst_percent}/>
+          <Controller control={control} name="cgst_percent"
+            rules={{ required: "CGST Percent is required", min: {value:0, message: "Min value allowed is 0"}, max: {value:100, message: "Max value allowed is 100"} }}
+            render={({ field }) => (
+              <SoftInput {...field} type="number" placeholder="CGST Percent" inputProps={{step: "any"}} error={!!errors.cgst_percent}
+                value={field.value || ''}
+                onChange={(e)=>{
+                  const value = parseFloat(e.target.value)
+                  let {sgst_percent,rate_with_gst,rate} = getValues()
+                  if(sgst_percent && rate && value){
+                    rate_with_gst = parseInt(rate) + (rate*(value/100)) + (rate*(sgst_percent/100))
+                    setValue('rate_with_gst',rate_with_gst)
+                  }
+                  field.onChange(e)
+                }}/>
+            )}
+          />
           <SoftTypography color="error" fontSize={10} mt={1}>
             <span>{errors.cgst_percent?.message}</span>
           </SoftTypography>
@@ -123,35 +149,82 @@ function ProductConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,da
           <SoftBox mb={1} ml={0.5}>
             <SoftTypography component="label" variant="caption" fontWeight="bold">SGST Percent</SoftTypography>
           </SoftBox>
-          <SoftInput type="number" placeholder="SGST Percent" inputProps={{step: "any"}}
-            {...register("sgst_percent", { required: "SGST Percent is required", min: {value:0, message: "Min value allowed is 0"}, max: {value:100, message: "Max value allowed is 100"}})} 
-            error={!!errors.sgst_percent}/>
+          <Controller control={control} name="sgst_percent"
+            rules={{ required: "SGST Percent is required", min: {value:0, message: "Min value allowed is 0"}, max: {value:100, message: "Max value allowed is 100"} }}
+            render={({ field }) => (
+              <SoftInput {...field} type="number" placeholder="SGST Percent" inputProps={{step: "any"}} error={!!errors.sgst_percent}
+                value={field.value || ''}
+                onChange={(e)=>{
+                  const value = parseFloat(e.target.value)
+                  let {cgst_percent,rate_with_gst,rate} = getValues()
+                  if(cgst_percent && rate && value){
+                    rate_with_gst = parseInt(rate) + (rate*(cgst_percent/100)) + (rate*(value/100))
+                    setValue('rate_with_gst',rate_with_gst)
+                  }
+                  field.onChange(e)
+                }}/>
+            )}
+          />
           <SoftTypography color="error" fontSize={10} mt={1}>
             <span>{errors.sgst_percent?.message}</span>
           </SoftTypography>
         </SoftBox>
         <SoftBox mb={1}>
           <SoftBox mb={1} ml={0.5}>
-            <SoftTypography component="label" variant="caption" fontWeight="bold">Profit Percent</SoftTypography>
-          </SoftBox>
-          <SoftInput type="number" placeholder="Profit Percent" inputProps={{step: "any"}}
-            {...register("profit_percent", { required: "Profit Percent is required", min: {value:0, message: "Min value allowed is 0"}, max: {value:100, message: "Max value allowed is 100"} })} 
-            error={!!errors.profit_percent}/>
-          <SoftTypography color="error" fontSize={10} mt={1}>
-            <span>{errors.profit_percent?.message}</span>
-          </SoftTypography>
-        </SoftBox>
-        <SoftBox mb={1}>
-          <SoftBox mb={1} ml={0.5}>
             <SoftTypography component="label" variant="caption" fontWeight="bold">Rate With Gst</SoftTypography>
           </SoftBox>
-          <SoftInput type="number" placeholder="Rate With Gst" inputProps={{step: "any"}}
-            {...register("rate_with_gst", { required: "Rate With Gst is required", min: {value:0, message: "Min value allowed is 0"} })} 
-            error={!!errors.rate_with_gst}/>
+          <Controller control={control} name="rate_with_gst"
+            rules={{ required: "Rate With Gst is required", min: {value:0, message: "Min value allowed is 0"} }}
+            render={({ field }) => (
+              <SoftInput {...field} type="number" placeholder="Rate With Gst" inputProps={{step: "any"}} error={!!errors.rate_with_gst}
+                value={field.value || ''}
+                onChange={(e)=>{
+                  const value = parseFloat(e.target.value)
+                  let {cgst_percent,sgst_percent,rate} = getValues()
+                  if(cgst_percent && sgst_percent && value){
+                    rate = value/(1+(cgst_percent/100)+(sgst_percent/100))
+                    setValue('rate',rate)
+                  }
+                  field.onChange(e)
+                }}/>
+            )}
+          />
           <SoftTypography color="error" fontSize={10} mt={1}>
             <span>{errors.rate_with_gst?.message}</span>
           </SoftTypography>
         </SoftBox>
+        <SoftBox mb={1}>
+          <SoftBox mb={1} ml={0.5}>
+            <SoftTypography component="label" variant="caption" fontWeight="bold">Profit Percent</SoftTypography>
+          </SoftBox>
+          <Controller control={control} name="profit_percent"
+            rules={{ required: "Profit Percent is required", min: {value:0, message: "Min value allowed is 0"}, max: {value:100, message: "Max value allowed is 100"} }}
+            render={({ field }) => (
+              <SoftInput {...field} type="number" placeholder="Profit Percent" inputProps={{step: "any"}} error={!!errors.profit_percent}
+                value={field.value || ''}
+                onChange={(e)=>{
+                  const value = parseFloat(e.target.value)
+                  let {rate_with_gst} = getValues()
+                  if(rate_with_gst && value){
+                    const sell_rate = parseInt(rate_with_gst) + (rate_with_gst*(value/100))
+                    setSellRate(sell_rate)
+                  }
+                  field.onChange(e)
+                }}/>
+            )}
+          />
+          <SoftTypography color="error" fontSize={10} mt={1}>
+            <span>{errors.profit_percent?.message}</span>
+          </SoftTypography>
+        </SoftBox>
+        {
+          sellRate &&
+          <SoftBox mb={1}>
+            <SoftBox mb={1} ml={0.5}>
+              <SoftTypography component="label" variant="caption" fontWeight="bold">Sell Rate : {sellRate}</SoftTypography>
+            </SoftBox>
+          </SoftBox>
+        }
         <SoftBox mt={2} mb={1}>
           <SoftButton variant="gradient" color="info" type="submit" fullWidth>{isEdit ? "Edit" : "Add"}</SoftButton>
         </SoftBox>
