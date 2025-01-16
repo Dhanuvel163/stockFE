@@ -10,9 +10,10 @@ import { useUserController } from "../../../context/user";
 import Select from 'react-select'
 import AddProducts from "./AddProducts";
 import moment from "moment";
+import bigDecimal from 'js-big-decimal';
 
 function PurchaseConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data}}) {
-  const {register, handleSubmit, watch, formState: { errors }, setValue, reset, control, } = useForm()
+  const {register, handleSubmit, watch, formState: { errors }, setValue, reset, control, getValues} = useForm()
   const [userController, userDispatch] = useUserController();
   const {brands,super_stockers,products} = userController
   const [productModal,setProductModal] = useState(false)
@@ -147,9 +148,32 @@ function PurchaseConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,d
                   <SoftBox mb={1} ml={0.5}>
                     <SoftTypography component="label" variant="caption" fontWeight="bold">Rate</SoftTypography>
                   </SoftBox>
-                  <SoftInput type="number" placeholder="Rate" inputProps={{step: "any"}}
-                    {...register(`products.${selectedProduct._id}.rate`, { required: "Rate is required", min: {value:0, message: "Min value allowed is 0"} })} 
-                    error={!!errors?.products?.[selectedProduct._id]?.rate}/>
+                  <Controller control={control} name={`products.${selectedProduct._id}.rate`}
+                    rules={{ required: "Rate is required", min: {value:0, message: "Min value allowed is 0"} }}
+                    render={({ field }) => (
+                      <SoftInput {...field} type="number" placeholder="Rate" inputProps={{step: "any"}} error={!!errors?.products?.[selectedProduct._id]?.rate}
+                        value={field.value || ''}
+                        onChange={(e)=>{
+                          const value = parseFloat(e.target.value)
+                          let {products} = getValues()
+                          const sgst_percent = products[selectedProduct._id]?.sgst_percent
+                          const cgst_percent = products[selectedProduct._id]?.cgst_percent
+                          const units = products[selectedProduct._id]?.units
+                          if(cgst_percent && sgst_percent && value){
+                            const rate_with_gst = bigDecimal.add(
+                              (bigDecimal.add(value,(value*(bigDecimal.divide(cgst_percent,100))))),
+                              (value*(bigDecimal.divide(sgst_percent,100)))
+                            )
+                            setValue(`products.${selectedProduct._id}.rate_with_gst`,rate_with_gst)
+                            if(units){
+                              setTotalRate((prev)=>{ return {...prev,[selectedProduct._id]:(units*rate_with_gst)} })
+                            }
+                          }
+                          field.onChange(e)
+                        }}/>
+                    )}
+                  />
+
                   <SoftTypography color="error" fontSize={10} mt={1}>
                     <span>{errors?.products?.[selectedProduct._id]?.rate?.message}</span>
                   </SoftTypography>
@@ -158,9 +182,31 @@ function PurchaseConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,d
                   <SoftBox mb={1} ml={0.5}>
                     <SoftTypography component="label" variant="caption" fontWeight="bold">CGST Percent</SoftTypography>
                   </SoftBox>
-                  <SoftInput type="number" placeholder="CGST Percent" inputProps={{step: "any"}}
-                    {...register(`products.${selectedProduct._id}.cgst_percent`, { required: "CGST Percent is required", min: {value:0, message: "Min value allowed is 0"},max: {value:100, message: "Max value allowed is 100"} })} 
-                    error={!!errors?.products?.[selectedProduct._id]?.cgst_percent}/>
+                  <Controller control={control} name={`products.${selectedProduct._id}.cgst_percent`}
+                    rules={{ required: "CGST Percent is required", min: {value:0, message: "Min value allowed is 0"},max: {value:100, message: "Max value allowed is 100"} }}
+                    render={({ field }) => (
+                      <SoftInput {...field} type="number" placeholder="CGST Percent" inputProps={{step: "any"}} error={!!errors?.products?.[selectedProduct._id]?.cgst_percent}
+                        value={field.value || ''}
+                        onChange={(e)=>{
+                          const value = parseFloat(e.target.value)
+                          let {products} = getValues()
+                          const sgst_percent = products[selectedProduct._id]?.sgst_percent
+                          const rate = products[selectedProduct._id]?.rate
+                          const units = products[selectedProduct._id]?.units
+                          if(sgst_percent && rate && value){
+                            const rate_with_gst = bigDecimal.add(
+                              (bigDecimal.add(parseFloat(rate),(rate*(bigDecimal.divide(value,100))))),
+                              (rate*(bigDecimal.divide(sgst_percent,100)))
+                            )
+                            setValue(`products.${selectedProduct._id}.rate_with_gst`,rate_with_gst)
+                            if(units){
+                              setTotalRate((prev)=>{ return {...prev,[selectedProduct._id]:(units*rate_with_gst)} })
+                            }
+                          }
+                          field.onChange(e)
+                        }}/>
+                    )}
+                  />
                   <SoftTypography color="error" fontSize={10} mt={1}>
                     <span>{errors?.products?.[selectedProduct._id]?.cgst_percent?.message}</span>
                   </SoftTypography>
@@ -169,9 +215,31 @@ function PurchaseConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,d
                   <SoftBox mb={1} ml={0.5}>
                     <SoftTypography component="label" variant="caption" fontWeight="bold">SGST Percent</SoftTypography>
                   </SoftBox>
-                  <SoftInput type="number" placeholder="SGST Percent" inputProps={{step: "any"}}
-                    {...register(`products.${selectedProduct._id}.sgst_percent`, { required: "SGST Percent is required", min: {value:0, message: "Min value allowed is 0"},max: {value:100, message: "Max value allowed is 100"} })} 
-                    error={!!errors?.products?.[selectedProduct._id]?.sgst_percent}/>
+                  <Controller control={control} name={`products.${selectedProduct._id}.sgst_percent`}
+                    rules={{ required: "SGST Percent is required", min: {value:0, message: "Min value allowed is 0"},max: {value:100, message: "Max value allowed is 100"} }}
+                    render={({ field }) => (
+                      <SoftInput {...field} type="number" placeholder="SGST Percent" inputProps={{step: "any"}} error={!!errors?.products?.[selectedProduct._id]?.sgst_percent}
+                        value={field.value || ''}
+                        onChange={(e)=>{
+                          const value = parseFloat(e.target.value)
+                          let {products} = getValues()
+                          const cgst_percent = products[selectedProduct._id]?.cgst_percent
+                          const rate = products[selectedProduct._id]?.rate
+                          const units = products[selectedProduct._id]?.units
+                          if(cgst_percent && rate && value){
+                            const rate_with_gst = bigDecimal.add(
+                              (bigDecimal.add(parseFloat(rate), (rate*(bigDecimal.divide(cgst_percent,100))))),
+                              (rate*(bigDecimal.divide(value,100)))
+                            )
+                            setValue(`products.${selectedProduct._id}.rate_with_gst`,rate_with_gst)
+                            if(units){
+                              setTotalRate((prev)=>{ return {...prev,[selectedProduct._id]:(units*rate_with_gst)} })
+                            }
+                          }
+                          field.onChange(e)
+                        }}/>
+                    )}
+                  />
                   <SoftTypography color="error" fontSize={10} mt={1}>
                     <span>{errors?.products?.[selectedProduct._id]?.sgst_percent?.message}</span>
                   </SoftTypography>
@@ -180,9 +248,35 @@ function PurchaseConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,d
                   <SoftBox mb={1} ml={0.5}>
                     <SoftTypography component="label" variant="caption" fontWeight="bold">Rate With Gst</SoftTypography>
                   </SoftBox>
-                  <SoftInput type="number" placeholder="Rate With Gst" inputProps={{step: "any"}}
-                    {...register(`products.${selectedProduct._id}.rate_with_gst`, { required: "Rate With Gst is required", min: {value:0, message: "Min value allowed is 0"} })} 
-                    error={!!errors?.products?.[selectedProduct._id]?.rate_with_gst}/>
+                  <Controller control={control} name={`products.${selectedProduct._id}.rate_with_gst`}
+                    rules={{ required: "Rate With Gst is required", min: {value:0, message: "Min value allowed is 0"} }}
+                    render={({ field }) => (
+                      <SoftInput {...field} type="number" placeholder="Rate With Gst" inputProps={{step: "any"}} error={!!errors?.products?.[selectedProduct._id]?.rate_with_gst}
+                        value={field.value || ''}
+                        onChange={(e)=>{
+                          const value = parseFloat(e.target.value)
+                          let {products} = getValues()
+                          const cgst_percent = products[selectedProduct._id]?.cgst_percent
+                          const sgst_percent = products[selectedProduct._id]?.sgst_percent
+                          const units = products[selectedProduct._id]?.units
+                          if(cgst_percent && sgst_percent && value){
+                            const rate = bigDecimal.divide(
+                              value,
+                              (bigDecimal.add(1,(bigDecimal.add(
+                                  (bigDecimal.divide(cgst_percent,100)),
+                                  (bigDecimal.divide(sgst_percent,100))
+                                ))
+                              ))
+                            )
+                            setValue(`products.${selectedProduct._id}.rate`,rate)
+                          }
+                          if(units && value){
+                            setTotalRate((prev)=>{ return {...prev,[selectedProduct._id]:(units*value)} })
+                          }
+                          field.onChange(e)
+                        }}/>
+                    )}
+                  />
                   <SoftTypography color="error" fontSize={10} mt={1}>
                     <span>{errors?.products?.[selectedProduct._id]?.rate_with_gst?.message}</span>
                   </SoftTypography>
@@ -191,9 +285,22 @@ function PurchaseConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,d
                   <SoftBox mb={1} ml={0.5}>
                     <SoftTypography component="label" variant="caption" fontWeight="bold">Units</SoftTypography>
                   </SoftBox>
-                  <SoftInput type="number" placeholder="Units" inputProps={{step: "any"}}
-                    {...register(`products.${selectedProduct._id}.units`, { required: "Units is required", min: {value:0, message: "Min value allowed is 0"} })} 
-                    error={!!errors?.products?.[selectedProduct._id]?.units}/>
+                  <Controller control={control} name={`products.${selectedProduct._id}.units`}
+                    rules={{ required: "Units is required", min: {value:0, message: "Min value allowed is 0"} }}
+                    render={({ field }) => (
+                      <SoftInput {...field} type="number" placeholder="Units" inputProps={{step: "any"}} error={!!errors?.products?.[selectedProduct._id]?.units}
+                        value={field.value || ''}
+                        onChange={(e)=>{
+                          const value = parseFloat(e.target.value)
+                          let {products} = getValues()
+                          const rate_with_gst = products[selectedProduct._id]?.rate_with_gst
+                          if(rate_with_gst && value){
+                            setTotalRate((prev)=>{ return {...prev,[selectedProduct._id]:(rate_with_gst*value)} })
+                          }
+                          field.onChange(e)
+                        }}/>
+                    )}
+                  />
                   <SoftTypography color="error" fontSize={10} mt={1}>
                     <span>{errors?.products?.[selectedProduct._id]?.units?.message}</span>
                   </SoftTypography>
@@ -204,7 +311,7 @@ function PurchaseConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,d
                   </SoftBox>
                   <SoftBox mb={1} flex={1} ml={0.5} display="flex" alignItems="center" width={80}>
                     <SoftTypography component="p" variant="caption" align="center">
-                      {totalRate?.[selectedProduct._id] || ''}
+                      {parseFloat(totalRate?.[selectedProduct._id]).toFixed(4) || ''}
                     </SoftTypography>
                   </SoftBox>
                 </SoftBox>
