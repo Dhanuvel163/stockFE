@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useUserController } from "../../../context/user";
 import Select from 'react-select'
 import AddProducts from "./AddProducts";
+import moment from "moment";
 
 function PurchaseConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data}}) {
   const {register, handleSubmit, watch, formState: { errors }, setValue, reset, control, } = useForm()
@@ -16,6 +17,7 @@ function PurchaseConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,d
   const {brands,super_stockers,products} = userController
   const [productModal,setProductModal] = useState(false)
   const [selectedProducts,setselectedProducts] = useState([])
+  const [totalRate,setTotalRate] = useState({})
 
   useEffect(()=>{
     if(isEdit && data){
@@ -43,6 +45,7 @@ function PurchaseConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,d
       if(product.sgst_percent) setValue(`products.${product._id}.sgst_percent`,product?.sgst_percent)
       setValue(`products.${product._id}.units`,"1")
       if(product.rate_with_gst) setValue(`products.${product._id}.rate_with_gst`,product?.rate_with_gst)
+      setTotalRate((prev)=>{ return {...prev,[product._id]:product?.rate_with_gst} })
     })
   },[selectedProducts])
 
@@ -93,7 +96,7 @@ function PurchaseConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,d
             <SoftBox mb={1} ml={0.5}>
               <SoftTypography component="label" variant="caption" fontWeight="bold">Purchase Date</SoftTypography>
             </SoftBox>
-            <SoftInput type="date" placeholder="Purchase Date"
+            <SoftInput type="date" placeholder="Purchase Date" inputProps={{min:moment().subtract(5,"days").format("YYYY-MM-DD"),max:moment().add(1,"days").format("YYYY-MM-DD")}}
               {...register("purchase_date", { required: "Purchase Date is required" })} 
               error={!!errors.purchase_date}/>
             <SoftTypography color="error" fontSize={10} mt={1}>
@@ -175,6 +178,17 @@ function PurchaseConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,d
                 </SoftBox>
                 <SoftBox mb={1}>
                   <SoftBox mb={1} ml={0.5}>
+                    <SoftTypography component="label" variant="caption" fontWeight="bold">Rate With Gst</SoftTypography>
+                  </SoftBox>
+                  <SoftInput type="number" placeholder="Rate With Gst" inputProps={{step: "any"}}
+                    {...register(`products.${selectedProduct._id}.rate_with_gst`, { required: "Rate With Gst is required", min: {value:0, message: "Min value allowed is 0"} })} 
+                    error={!!errors?.products?.[selectedProduct._id]?.rate_with_gst}/>
+                  <SoftTypography color="error" fontSize={10} mt={1}>
+                    <span>{errors?.products?.[selectedProduct._id]?.rate_with_gst?.message}</span>
+                  </SoftTypography>
+                </SoftBox>
+                <SoftBox mb={1}>
+                  <SoftBox mb={1} ml={0.5}>
                     <SoftTypography component="label" variant="caption" fontWeight="bold">Units</SoftTypography>
                   </SoftBox>
                   <SoftInput type="number" placeholder="Units" inputProps={{step: "any"}}
@@ -184,16 +198,15 @@ function PurchaseConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,d
                     <span>{errors?.products?.[selectedProduct._id]?.units?.message}</span>
                   </SoftTypography>
                 </SoftBox>
-                <SoftBox mb={1}>
+                <SoftBox mb={1} display="flex" flexDirection="column">
                   <SoftBox mb={1} ml={0.5}>
-                    <SoftTypography component="label" variant="caption" fontWeight="bold">Rate With Gst</SoftTypography>
+                    <SoftTypography component="label" variant="caption" fontWeight="bold">Total Rate</SoftTypography>
                   </SoftBox>
-                  <SoftInput type="number" placeholder="Rate With Gst" inputProps={{step: "any"}}
-                    {...register(`products.${selectedProduct._id}.rate_with_gst`, { required: "Rate With Gst is required", min: {value:0, message: "Min value allowed is 0"} })} 
-                    error={!!errors?.products?.[selectedProduct._id]?.rate_with_gst}/>
-                  <SoftTypography color="error" fontSize={10} mt={1}>
-                    <span>{errors?.products?.[selectedProduct._id]?.rate_with_gst?.message}</span>
-                  </SoftTypography>
+                  <SoftBox mb={1} flex={1} ml={0.5} display="flex" alignItems="center" width={80}>
+                    <SoftTypography component="p" variant="caption" align="center">
+                      {totalRate?.[selectedProduct._id] || ''}
+                    </SoftTypography>
+                  </SoftBox>
                 </SoftBox>
               </SoftBox>
             ))
