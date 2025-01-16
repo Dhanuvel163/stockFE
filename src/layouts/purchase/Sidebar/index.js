@@ -28,7 +28,10 @@ function PurchaseConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,d
   },[data])
 
   useEffect(()=>{
-    if(!isOpen) reset({super_stocker:'',purchase_date:'',products: {}})
+    if(!isOpen) {
+      reset({super_stocker:'',purchase_date:'',products: {}})
+      setselectedProducts([])
+    }
   },[isOpen])
 
   useEffect(() => {
