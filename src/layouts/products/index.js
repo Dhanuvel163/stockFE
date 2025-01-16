@@ -141,6 +141,7 @@ function Products() {
                   { name: "sgst percent", align: "center" },
                   { name: "profit percent", align: "center" },
                   { name: "rate with gst", align: "center" },
+                  { name: "stock", align: "center" },
                   { name: "edit", align: "center" },
                   // { name: "delete", align: "center" },
                 ]} 
@@ -189,6 +190,11 @@ function Products() {
                     "rate with gst": (
                       <SoftTypography variant="caption" color="secondary" fontWeight="bold">
                         {ss.rate_with_gst}
+                      </SoftTypography>
+                    ),
+                    stock: (
+                      <SoftTypography variant="caption" color="secondary" fontWeight="bold">
+                        {ss.stock}
                       </SoftTypography>
                     ),
                     edit: (
