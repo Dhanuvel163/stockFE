@@ -23,10 +23,9 @@ function Purchase() {
   const [drawerData,setDrawerData] = useState({isEdit:false,data:null})
   const [controller, dispatch] = useSoftUIController();
   const [userController, userDispatch] = useUserController();
-  const {products,brands,purchases} = userController
+  const {products,brands,purchases,super_stockers} = userController
   const [openErrorSnackbar, closeErrorSnackbar] = useSnackbar(error)
   const [openSuccessSnackbar, closeSuccessSnackbar] = useSnackbar(success)
-  const [productSearch,setProductSearch] = useState({name:null,brand:null})
   const [purchaseSearch,setPurchaseSearch] = useState({super_stocker:null,purchase_date:null})
 
   const onSubmit = async(data) => {
@@ -62,22 +61,6 @@ function Purchase() {
       let response = await call_api("POST","getPurchases/",{},purchaseSearch)
       if(response.data?.success){
         listPurchases(userDispatch, response.data?.data);
-      }else openErrorSnackbar(response.data?.error)
-    } catch (error) {
-      const response = error.response?.data
-      if(!response?.success) openErrorSnackbar(response?.error)
-      else openErrorSnackbar("Something went wrong, Please try after sometime.")
-    }finally{
-      setLoader(dispatch, false);
-    }
-  }
-
-  const getProducts = async() => {
-    setLoader(dispatch, true);
-    try {
-      let response = await call_api("POST","getProducts/",{},productSearch)
-      if(response.data?.success){
-        listProducts(userDispatch, response.data?.data);
       }else openErrorSnackbar(response.data?.error)
     } catch (error) {
       const response = error.response?.data
@@ -127,7 +110,7 @@ function Purchase() {
 
   useEffect(()=>{
     (async()=>{
-      await Promise.all([getProducts(), getBrands(), getPurchases(), getSuperStocker()])
+      await Promise.all([getBrands(), getPurchases(), getSuperStocker()])
     })()
   },[])
 
@@ -137,24 +120,23 @@ function Purchase() {
       <SoftButton shadow={"true"} color="info" mt={1} variant="gradient" onClick={()=>{setDrawerData({isEdit:false,data:null});setDrawer(true)}}>
         Add Purchase
       </SoftButton>
-      {/* <SoftBox py={3} display="flex" alignItems="center" gap={1}>
-        <SoftInput
-          placeholder="Search by name..."
-          icon={{ component: "search", direction: "left" }}
-          onChange={(e)=>{setSearch((prev)=>({...prev,name:e.target.value}))}}
-        />
-        <Select placeholder="Brand"
+      <SoftBox py={3} display="flex" alignItems="center" gap={1}>
+        <div style={{width:200}}>
+          <SoftInput type="date" placeholder="Purchase Date"
+            onChange={(e)=>{setPurchaseSearch((prev)=>({...prev,purchase_date:e.target.value}))}}/>
+        </div>
+        <Select placeholder="Super Stocker"
           styles={{
             control: (baseStyles, state) => ({...baseStyles, borderRadius: '0.5rem', border: '0.0625rem solid #d2d6da', fontSize: '0.875rem', fontWeight: '400', color: '#495057', minWidth:200}),
             option: (baseStyles, state) => ({...baseStyles, fontSize: '0.875rem', fontWeight: '400'}),
           }}
-          options={[{value:null,label:'-- All --'},...brands.map((brand)=>({value: brand._id, label: brand.name}))]} 
-          onChange={(e)=>{setSearch((prev)=>({...prev,brand:e.value}))}}
+          options={[{value:null,label:'-- All --'},...super_stockers.map((super_stocker)=>({value: super_stocker._id, label: super_stocker.name}))]} 
+          onChange={(e)=>{setPurchaseSearch((prev)=>({...prev,super_stocker:e.value}))}}
         />
-        <SoftButton shadow={"true"} color="dark" mt={1} variant="gradient" onClick={()=>{getProducts()}}>
+        <SoftButton shadow={"true"} color="dark" mt={1} variant="gradient" onClick={()=>{getPurchases()}}>
           Search
         </SoftButton>
-      </SoftBox> */}
+      </SoftBox>
       <SoftBox pb={3}>
         <SoftBox mb={3}>
           <Card>
