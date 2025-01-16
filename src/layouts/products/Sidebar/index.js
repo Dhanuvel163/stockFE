@@ -8,6 +8,7 @@ import SoftButton from "../../../components/SoftButton";
 import { useEffect, useState } from "react";
 import { useUserController } from "../../../context/user";
 import Select from 'react-select'
+import bigDecimal from 'js-big-decimal';
 
 function ProductConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data}}) {
   const {register, handleSubmit, watch, formState: { errors }, setValue, reset, control, getValues} = useForm()
@@ -110,7 +111,10 @@ function ProductConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,da
                   const value = parseFloat(e.target.value)
                   let {cgst_percent,sgst_percent,rate_with_gst} = getValues()
                   if(cgst_percent && sgst_percent && value){
-                    rate_with_gst = value + (value*(cgst_percent/100)) + (value*(sgst_percent/100))
+                    rate_with_gst = bigDecimal.add(
+                      (bigDecimal.add(value,(value*(bigDecimal.divide(cgst_percent,100))))),
+                      (value*(bigDecimal.divide(sgst_percent,100)))
+                    )
                     setValue('rate_with_gst',rate_with_gst)
                   }
                   field.onChange(e)
@@ -134,7 +138,10 @@ function ProductConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,da
                   const value = parseFloat(e.target.value)
                   let {sgst_percent,rate_with_gst,rate} = getValues()
                   if(sgst_percent && rate && value){
-                    rate_with_gst = parseInt(rate) + (rate*(value/100)) + (rate*(sgst_percent/100))
+                    rate_with_gst = bigDecimal.add(
+                      (bigDecimal.add(parseFloat(rate),(rate*(bigDecimal.divide(value,100))))),
+                      (rate*(bigDecimal.divide(sgst_percent,100)))
+                    )
                     setValue('rate_with_gst',rate_with_gst)
                   }
                   field.onChange(e)
@@ -158,7 +165,10 @@ function ProductConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,da
                   const value = parseFloat(e.target.value)
                   let {cgst_percent,rate_with_gst,rate} = getValues()
                   if(cgst_percent && rate && value){
-                    rate_with_gst = parseInt(rate) + (rate*(cgst_percent/100)) + (rate*(value/100))
+                    rate_with_gst = bigDecimal.add(
+                      (bigDecimal.add(parseFloat(rate), (rate*(bigDecimal.divide(cgst_percent,100))))),
+                      (rate*(bigDecimal.divide(value,100)))
+                    )
                     setValue('rate_with_gst',rate_with_gst)
                   }
                   field.onChange(e)
@@ -182,7 +192,14 @@ function ProductConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,da
                   const value = parseFloat(e.target.value)
                   let {cgst_percent,sgst_percent,rate} = getValues()
                   if(cgst_percent && sgst_percent && value){
-                    rate = value/(1+(cgst_percent/100)+(sgst_percent/100))
+                    rate = bigDecimal.divide(
+                      value,
+                      (bigDecimal.add(1,(bigDecimal.add(
+                          (bigDecimal.divide(cgst_percent,100)),
+                          (bigDecimal.divide(sgst_percent,100))
+                        ))
+                      ))
+                    )
                     setValue('rate',rate)
                   }
                   field.onChange(e)
@@ -206,7 +223,7 @@ function ProductConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,da
                   const value = parseFloat(e.target.value)
                   let {rate_with_gst} = getValues()
                   if(rate_with_gst && value){
-                    const sell_rate = parseInt(rate_with_gst) + (rate_with_gst*(value/100))
+                    const sell_rate = bigDecimal.add(parseFloat(rate_with_gst),(rate_with_gst*(bigDecimal.divide(value,100))))
                     setSellRate(sell_rate)
                   }
                   field.onChange(e)
