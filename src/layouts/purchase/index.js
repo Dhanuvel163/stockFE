@@ -147,7 +147,7 @@ function Purchase() {
                 columns={[
                   { name: "purchase date", align: "center" },
                   { name: "superstocker", align: "center" },
-                  { name: "products", align: "center" },
+                  { name: "products(count)", align: "center" },
                   // { name: "edit", align: "center" },
                   // { name: "delete", align: "center" },
                 ]} 
@@ -163,9 +163,9 @@ function Purchase() {
                         {purchase.super_stocker?.name}
                       </SoftTypography>
                     ),
-                    products: (
+                    "products(count)": (
                       <SoftTypography variant="caption" color="secondary" fontWeight="bold">
-                        {purchase.products?.map((product)=>product?.product?.name)?.join(", ")}
+                        {purchase.products?.map((product)=>`${product?.product?.name}(${product?.units})`)?.join(", ")}
                       </SoftTypography>
                     ),
                     // edit: (

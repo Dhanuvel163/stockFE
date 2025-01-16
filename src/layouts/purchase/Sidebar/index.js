@@ -19,6 +19,7 @@ function PurchaseConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,d
   const [productModal,setProductModal] = useState(false)
   const [selectedProducts,setselectedProducts] = useState([])
   const [totalRate,setTotalRate] = useState({})
+  const [grandTotal,setGrandTotal] = useState(null)
 
   useEffect(()=>{
     if(isEdit && data){
@@ -40,6 +41,15 @@ function PurchaseConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,d
     })
     return () => unsubscribe()
   }, [watch])
+  
+  useEffect(()=>{
+    let grand_total = 0
+    selectedProducts.forEach((selectedProduct)=>{
+      grand_total = bigDecimal.add(grand_total,parseFloat(totalRate[selectedProduct._id])) 
+    })
+    if(!!grand_total) grand_total = parseFloat(grand_total).toFixed(4)
+    setGrandTotal(grand_total)
+  },[totalRate])  
 
   useEffect(()=>{
     selectedProducts.forEach((product)=>{
@@ -320,6 +330,19 @@ function PurchaseConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,d
                 </SoftBox>
               </SoftBox>
             ))
+          }
+          {
+            !!grandTotal &&
+            <SoftBox mb={1} mt={2} ml="auto" width={80}>
+              <SoftBox mb={1} ml={0.5}>
+                <SoftTypography component="label" variant="caption" fontWeight="bold">Grand Total</SoftTypography>
+              </SoftBox>
+              <SoftBox mb={1} flex={1} ml={0.5} display="flex" alignItems="center">
+                <SoftTypography component="p" variant="caption" align="center">
+                  {grandTotal}
+                </SoftTypography>
+              </SoftBox>
+            </SoftBox>
           }
           <SoftBox mb={1} mt={2}>
             <Modal open={productModal} onClose={()=>setProductModal(false)}>
