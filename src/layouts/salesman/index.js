@@ -125,7 +125,8 @@ function Salesman() {
           </Card>
         </SoftBox>
       </SoftBox>
-      <SalesConfigurator isOpen={drawer} handleClose={()=>setDrawer(false)} onSubmit={onSubmit} drawerData={drawerData}/>
+      <SalesConfigurator isOpen={drawer} onSubmit={onSubmit} drawerData={drawerData}
+        handleClose={()=>{setDrawer(false);setDrawerData({isEdit:false,data:null})}}/>
     </DashboardLayout>
   );
 }

@@ -149,7 +149,8 @@ function ShopPage() {
           </Card>
         </SoftBox>
       </SoftBox>
-      <ShopConfigurator isOpen={drawer} handleClose={()=>setDrawer(false)} onSubmit={onSubmit} drawerData={drawerData}/>
+      <ShopConfigurator isOpen={drawer} onSubmit={onSubmit} drawerData={drawerData}
+        handleClose={()=>{setDrawer(false);setDrawerData({isEdit:false,data:null})}}/>
     </DashboardLayout>
   );
 }

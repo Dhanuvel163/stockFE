@@ -208,7 +208,8 @@ function Products() {
           </Card>
         </SoftBox>
       </SoftBox>
-      <ProductConfigurator isOpen={drawer} handleClose={()=>setDrawer(false)} onSubmit={onSubmit} drawerData={drawerData}/>
+      <ProductConfigurator isOpen={drawer} onSubmit={onSubmit} drawerData={drawerData}
+        handleClose={()=>{setDrawer(false);setDrawerData({isEdit:false,data:null})}}/>
     </DashboardLayout>
   );
 }

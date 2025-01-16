@@ -125,7 +125,8 @@ function SuperStocker() {
           </Card>
         </SoftBox>
       </SoftBox>
-      <SuperStockerConfigurator isOpen={drawer} handleClose={()=>setDrawer(false)} onSubmit={onSubmit} drawerData={drawerData}/>
+      <SuperStockerConfigurator isOpen={drawer} onSubmit={onSubmit} drawerData={drawerData}
+        handleClose={()=>{setDrawer(false);setDrawerData({isEdit:false,data:null})}}/>
     </DashboardLayout>
   );
 }

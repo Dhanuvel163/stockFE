@@ -119,7 +119,8 @@ function Brands() {
           </Card>
         </SoftBox>
       </SoftBox>
-      <BrandConfigurator isOpen={drawer} handleClose={()=>setDrawer(false)} onSubmit={onSubmit} drawerData={drawerData}/>
+      <BrandConfigurator isOpen={drawer} onSubmit={onSubmit} drawerData={drawerData}
+        handleClose={()=>{ setDrawer(false); setDrawerData({isEdit:false,data:null}); }}/>
     </DashboardLayout>
   );
 }

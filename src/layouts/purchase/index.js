@@ -185,7 +185,8 @@ function Purchase() {
           </Card>
         </SoftBox>
       </SoftBox>
-      <PurchaseConfigurator isOpen={drawer} handleClose={()=>setDrawer(false)} onSubmit={onSubmit} drawerData={drawerData}/>
+      <PurchaseConfigurator isOpen={drawer} onSubmit={onSubmit} drawerData={drawerData}
+        handleClose={()=>{setDrawer(false);setDrawerData({isEdit:false,data:null})}}/>
     </DashboardLayout>
   );
 }
