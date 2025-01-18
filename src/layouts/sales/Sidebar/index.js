@@ -430,7 +430,7 @@ function SalesConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
           {
             !!total && (
               <>
-                <SoftBox mb={1} mt={2} ml="auto" width={80}>
+                <SoftBox mb={1} mt={2} ml="auto" width={110}>
                   <SoftBox mb={1} ml={0.5}>
                     <SoftTypography component="label" variant="caption" fontWeight="bold">Total</SoftTypography>
                   </SoftBox>
@@ -440,7 +440,7 @@ function SalesConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
                     </SoftTypography>
                   </SoftBox>
                 </SoftBox>
-                <SoftBox mb={1}>
+                <SoftBox mb={1} ml="auto" width={110}>
                   <SoftBox mb={1} ml={0.5}>
                     <SoftTypography component="label" variant="caption" fontWeight="bold">Discount</SoftTypography>
                   </SoftBox>
@@ -451,7 +451,7 @@ function SalesConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
                     <span>{errors?.total_discount?.message}</span>
                   </SoftTypography>
                 </SoftBox>
-                <SoftBox mb={1} mt={2} ml="auto" width={80}>
+                <SoftBox mb={1} mt={2} ml="auto" width={110}>
                   <SoftBox mb={1} ml={0.5}>
                     <SoftTypography component="label" variant="caption" fontWeight="bold">Grand Total</SoftTypography>
                   </SoftBox>
