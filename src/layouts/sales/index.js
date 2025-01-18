@@ -164,6 +164,7 @@ function Sales() {
                   { name: "shop", align: "center" },
                   { name: "salesman", align: "center" },
                   { name: "products(count)", align: "center" },
+                  { name: "total amount", align: "center" },
                   // { name: "edit", align: "center" },
                   // { name: "delete", align: "center" },
                 ]} 
@@ -187,6 +188,11 @@ function Sales() {
                     "products(count)": (
                       <SoftTypography variant="caption" color="secondary" fontWeight="bold">
                         {sale.products?.map((product)=>`${product?.product?.name}(${(product?.sell_units + (product?.sell_free_units || 0))})`)?.join(", ")}
+                      </SoftTypography>
+                    ),
+                    "total amount": (
+                      <SoftTypography variant="caption" color="secondary" fontWeight="bold">
+                        {sale.net_total_sell_rate}
                       </SoftTypography>
                     ),
                     // edit: (

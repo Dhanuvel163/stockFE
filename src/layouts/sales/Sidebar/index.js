@@ -254,6 +254,7 @@ function SalesConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
                           let {products} = getValues()
                           const sgst_percent = products[selectedProduct._id]?.sell_sgst_percent
                           const cgst_percent = products[selectedProduct._id]?.sell_cgst_percent
+                          const product_rate = selectedProduct.rate
                           const units = products[selectedProduct._id]?.sell_units
                           if(cgst_percent && sgst_percent && value){
                             const sell_rate_with_gst = bigDecimal.add(
@@ -264,6 +265,9 @@ function SalesConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
                             if(units){
                               setTotalRate((prev)=>{ return {...prev,[selectedProduct._id]:(units*sell_rate_with_gst)} })
                             }
+                          }
+                          if(product_rate && value){
+                            setValue(`products.${selectedProduct._id}.profit_percent`,bigDecimal.divide((value-product_rate),(bigDecimal.divide(product_rate,100))))
                           }
                           field.onChange(e)
                         }}/>
@@ -354,6 +358,7 @@ function SalesConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
                           const cgst_percent = products[selectedProduct._id]?.sell_cgst_percent
                           const sgst_percent = products[selectedProduct._id]?.sell_sgst_percent
                           const units = products[selectedProduct._id]?.sell_units
+                          const product_rate = selectedProduct.rate
                           if(cgst_percent && sgst_percent && value){
                             const sell_rate = bigDecimal.divide(
                               value,
@@ -364,6 +369,9 @@ function SalesConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
                               ))
                             )
                             setValue(`products.${selectedProduct._id}.sell_rate`,sell_rate)
+                            if(product_rate && sell_rate){
+                              setValue(`products.${selectedProduct._id}.profit_percent`,bigDecimal.divide((sell_rate-product_rate),(bigDecimal.divide(product_rate,100))))
+                            }
                           }
                           if(units && value){
                             setTotalRate((prev)=>{ return {...prev,[selectedProduct._id]:(units*value)} })
