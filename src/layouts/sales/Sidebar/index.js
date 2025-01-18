@@ -21,7 +21,8 @@ function SalesConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
   const [productModal,setProductModal] = useState(false)
   const [selectedProducts,setselectedProducts] = useState([])
   const [totalRate,setTotalRate] = useState({})
-  const [grandTotal,setGrandTotal] = useState(null)
+  const [total,setTotal] = useState(null)
+  const [discount,setDiscount] = useState(null)
   const [openErrorSnackbar, closeErrorSnackbar] = useSnackbar(error)
 
   useEffect(()=>{
@@ -42,17 +43,18 @@ function SalesConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
   useEffect(() => {
     const { unsubscribe } = watch((value) => {
       console.log(value)
+      if(value.total_discount) setDiscount(value.total_discount)
     })
     return () => unsubscribe()
   }, [watch])
   
   useEffect(()=>{
-    let grand_total = 0
+    let total = 0
     selectedProducts.forEach((selectedProduct)=>{
-      grand_total = bigDecimal.add(grand_total,parseFloat(totalRate[selectedProduct._id])) 
+      total = bigDecimal.add(total,parseFloat(totalRate[selectedProduct._id])) 
     })
-    if(!!grand_total) grand_total = parseFloat(grand_total).toFixed(4)
-    setGrandTotal(grand_total)
+    if(!!total) total = parseFloat(total).toFixed(4)
+    setTotal(total)
   },[totalRate])  
 
   const apply_profit = (rate,profit_percent) => {
@@ -63,6 +65,7 @@ function SalesConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
     selectedProducts.forEach((product)=>{
       if(product.mrp) setValue(`products.${product._id}.sell_mrp`,product?.mrp)
       if(product.rate) setValue(`products.${product._id}.sell_rate`,apply_profit(product?.rate,product?.profit_percent))
+      if(product.profit_percent) setValue(`products.${product._id}.profit_percent`,product?.profit_percent)
       if(product.cgst_percent) setValue(`products.${product._id}.sell_cgst_percent`,product?.cgst_percent)
       if(product.sgst_percent) setValue(`products.${product._id}.sell_sgst_percent`,product?.sgst_percent)
       setValue(`products.${product._id}.sell_units`,"1")
@@ -90,6 +93,7 @@ function SalesConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
           return {
             ...product,
             sell_mrp: productData.sell_mrp,
+            profit_percent: productData.profit_percent,
             sell_rate: productData.sell_rate,
             sell_cgst_percent: productData.sell_cgst_percent,
             sell_sgst_percent: productData.sell_sgst_percent,
@@ -109,7 +113,9 @@ function SalesConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
       if(data.salesman){
         data.salesman = data.salesman?.value
       }
-      onSubmit(data)      
+      if(total) data.total_sell_rate = total
+      if(total) data.net_total_sell_rate = bigDecimal.subtract(total,(discount || 0))
+      onSubmit(data)
     } catch (error) {
       if(error.is_error) openErrorSnackbar(error.message)
       else console.log({error})
@@ -185,7 +191,7 @@ function SalesConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
           </SoftBox>
           {
             selectedProducts.map((selectedProduct)=>(
-              <SoftBox mb={1} mt={1} display="flex" justifyContent="space-between" key={selectedProduct._id}>
+              <SoftBox mb={1} mt={1} display="flex" justifyContent="space-between" key={selectedProduct._id} gap={1}>
                 <SoftBox mb={1} width={70}>
                   <SoftBox mb={1} ml={0.5}>
                     <SoftTypography component="label" variant="caption" fontWeight="bold">Name</SoftTypography>
@@ -201,6 +207,37 @@ function SalesConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
                     error={!!errors?.products?.[selectedProduct._id]?.sell_mrp}/>
                   <SoftTypography color="error" fontSize={10} mt={1}>
                     <span>{errors?.products?.[selectedProduct._id]?.sell_mrp?.message}</span>
+                  </SoftTypography>
+                </SoftBox>
+                <SoftBox mb={1}>
+                  <SoftBox mb={1} ml={0.5}>
+                    <SoftTypography component="label" variant="caption" fontWeight="bold">Profit Percent</SoftTypography>
+                  </SoftBox>
+                  <Controller control={control} name={`products.${selectedProduct._id}.profit_percent`}
+                    rules={{ required: "Profit Percent is required", min: {value:0, message: "Min value allowed is 0"},max: {value:100, message: "Max value allowed is 100"} }}
+                    render={({ field }) => (
+                      <SoftInput {...field} type="number" placeholder="Profit Percent" inputProps={{step: "any"}} error={!!errors?.products?.[selectedProduct._id]?.profit_percent}
+                        value={field.value || ''}
+                        onChange={(e)=>{
+                          const value = parseFloat(e.target.value)
+                          const rate = parseFloat(selectedProduct.rate)
+                          const product_rate_with_gst = parseFloat(selectedProduct.rate_with_gst)
+                          let {products} = getValues()
+                          const units = products[selectedProduct._id]?.sell_units
+                          if(rate && product_rate_with_gst && value){
+                            setValue(`products.${selectedProduct._id}.sell_rate`,apply_profit(rate,value))
+                            const product_rate_with_gst_with_profit = apply_profit(product_rate_with_gst,value)
+                            setValue(`products.${selectedProduct._id}.sell_rate_with_gst`,product_rate_with_gst_with_profit)
+                            if(units){
+                              setTotalRate((prev)=>{ return {...prev,[selectedProduct._id]:(units*product_rate_with_gst_with_profit)} })
+                            }
+                          }
+                          field.onChange(e)
+                        }}/>
+                    )}
+                  />
+                  <SoftTypography color="error" fontSize={10} mt={1}>
+                    <span>{errors?.products?.[selectedProduct._id]?.sell_cgst_percent?.message}</span>
                   </SoftTypography>
                 </SoftBox>
                 <SoftBox mb={1}>
@@ -391,17 +428,41 @@ function SalesConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
             ))
           }
           {
-            !!grandTotal &&
-            <SoftBox mb={1} mt={2} ml="auto" width={80}>
-              <SoftBox mb={1} ml={0.5}>
-                <SoftTypography component="label" variant="caption" fontWeight="bold">Grand Total</SoftTypography>
-              </SoftBox>
-              <SoftBox mb={1} flex={1} ml={0.5} display="flex" alignItems="center">
-                <SoftTypography component="p" variant="caption" align="center">
-                  {grandTotal}
-                </SoftTypography>
-              </SoftBox>
-            </SoftBox>
+            !!total && (
+              <>
+                <SoftBox mb={1} mt={2} ml="auto" width={80}>
+                  <SoftBox mb={1} ml={0.5}>
+                    <SoftTypography component="label" variant="caption" fontWeight="bold">Total</SoftTypography>
+                  </SoftBox>
+                  <SoftBox mb={1} flex={1} ml={0.5} display="flex" alignItems="center">
+                    <SoftTypography component="p" variant="caption" align="center">
+                      {total}
+                    </SoftTypography>
+                  </SoftBox>
+                </SoftBox>
+                <SoftBox mb={1}>
+                  <SoftBox mb={1} ml={0.5}>
+                    <SoftTypography component="label" variant="caption" fontWeight="bold">Discount</SoftTypography>
+                  </SoftBox>
+                  <SoftInput type="number" placeholder="Discount" inputProps={{step: "any"}}
+                    {...register(`total_discount`, { min: {value:0, message: "Min value allowed is 0"} })} 
+                    error={!!errors?.total_discount}/>
+                  <SoftTypography color="error" fontSize={10} mt={1}>
+                    <span>{errors?.total_discount?.message}</span>
+                  </SoftTypography>
+                </SoftBox>
+                <SoftBox mb={1} mt={2} ml="auto" width={80}>
+                  <SoftBox mb={1} ml={0.5}>
+                    <SoftTypography component="label" variant="caption" fontWeight="bold">Grand Total</SoftTypography>
+                  </SoftBox>
+                  <SoftBox mb={1} flex={1} ml={0.5} display="flex" alignItems="center">
+                    <SoftTypography component="p" variant="caption" align="center">
+                      {bigDecimal.subtract(total,(discount || 0))}
+                    </SoftTypography>
+                  </SoftBox>
+                </SoftBox>
+              </>
+            )
           }
           <SoftBox mb={1} mt={2}>
             <Modal open={productModal} onClose={()=>setProductModal(false)}>
