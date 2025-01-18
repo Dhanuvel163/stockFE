@@ -26,6 +26,11 @@ function ProductConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,da
       if(data?.profit_percent) setValue('profit_percent',data?.profit_percent)
       if(data?.rate_with_gst) setValue('rate_with_gst',data?.rate_with_gst)
       if(data?.brand) setValue('brand',{label:data?.brand.name,value:data?.brand._id})
+      if(data?.profit_percent && data?.rate_with_gst) {
+        const rate_with_gst = parseFloat(data?.rate_with_gst)
+        const sell_rate = bigDecimal.add(rate_with_gst,(rate_with_gst*(bigDecimal.divide(data?.profit_percent,100))))
+        setSellRate(sell_rate)
+      }
     }
   },[data])
   useEffect(()=>{

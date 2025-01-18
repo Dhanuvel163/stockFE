@@ -14,7 +14,7 @@ function AddProducts({setProductModal,handleSubmit=()=>{}}) {
     const [userController, userDispatch] = useUserController();
     const {brands,products} = userController
     const [selectedProducts,setSelectedProducts] = useState([])
-    const [productSearch,setProductSearch] = useState({name:null,brand:null})
+    const [productSearch,setProductSearch] = useState({name:null,brand:null,in_stock:true})
     const [controller, dispatch] = useSoftUIController();
 
     const handleProductCheck = (product) => {

@@ -46,6 +46,7 @@ import AppsIcon from '@mui/icons-material/Apps';
 import Products from "./layouts/products";
 import Purchase from "./layouts/purchase";
 import Shop2Icon from '@mui/icons-material/Shop2';
+import Sales from "./layouts/sales";
 
 const routes = [
   // {
@@ -109,6 +110,15 @@ const routes = [
     route: "/purchase",
     icon: <Shop2Icon size="12px" />,
     component: <Purchase />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Sales",
+    key: "sales",
+    route: "/sales",
+    icon: <Shop2Icon size="12px" />,
+    component: <Sales />,
     noCollapse: true,
   },
   // {
