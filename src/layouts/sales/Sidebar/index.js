@@ -35,8 +35,11 @@ function SalesConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
 
   useEffect(()=>{
     if(!isOpen) {
-      reset({shop:'',sales_date:'',products: {},salesman:''})
+      reset({shop:'',sales_date:'',products: {},salesman:'',total_discount:'',total_sell_rate:'',net_total_sell_rate:''})
       setselectedProducts([])
+      setTotal(null)
+      setDiscount(null)
+      setTotalRate({})
     }
   },[isOpen])
 
