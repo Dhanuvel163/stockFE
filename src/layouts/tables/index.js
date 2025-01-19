@@ -1,17 +1,9 @@
-// @mui material components
 import Card from "@mui/material/Card";
-
-// Soft UI Dashboard React components
 import SoftBox from "../../components/SoftBox";
 import SoftTypography from "../../components/SoftTypography";
-
-// Soft UI Dashboard React examples
 import DashboardLayout from "../../examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "../../examples/Navbars/DashboardNavbar";
-import Footer from "../../examples/Footer";
 import Table from "../../examples/Tables/Table";
-
-// Data
 import authorsTableData from "./data/authorsTableData";
 import projectsTableData from "./data/projectsTableData";
 
@@ -36,8 +28,7 @@ function Tables() {
                       `${borderWidth[1]} solid ${borderColor}`,
                   },
                 },
-              }}
-            >
+              }}>
               <Table columns={columns} rows={rows} />
             </SoftBox>
           </Card>
@@ -54,13 +45,11 @@ function Tables() {
                     `${borderWidth[1]} solid ${borderColor}`,
                 },
               },
-            }}
-          >
+            }}>
             <Table columns={prCols} rows={prRows} />
           </SoftBox>
         </Card>
       </SoftBox>
-      <Footer />
     </DashboardLayout>
   );
 }

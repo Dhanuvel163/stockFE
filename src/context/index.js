@@ -1,20 +1,8 @@
-/**
-  This file is used for controlling the global states of the components,
-  you can customize the states for the different components here.
-*/
-
 import { createContext, useContext, useReducer, useMemo } from "react";
-
-// prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
-
-// The Soft UI Dashboard PRO Material main context
 const SoftUI = createContext(null);
-
-// Setting custom name for the context which is visible on react dev tools
 SoftUI.displayName = "SoftUIContext";
 
-// Soft UI Dashboard React reducer
 function reducer(state, action) {
   switch (action.type) {
     case "MINI_SIDENAV": {
@@ -41,13 +29,15 @@ function reducer(state, action) {
     case "LAYOUT": {
       return { ...state, layout: action.value };
     }
+    case "LOADER": {
+      return { ...state, loader: action.value };
+    }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
   }
 }
 
-// Soft UI Dashboard React context provider
 function SoftUIControllerProvider({ children }) {
   const initialState = {
     miniSidenav: false,
@@ -58,32 +48,26 @@ function SoftUIControllerProvider({ children }) {
     openConfigurator: false,
     direction: "ltr",
     layout: "dashboard",
+    loader: false
   };
 
   const [controller, dispatch] = useReducer(reducer, initialState);
-
   const value = useMemo(() => [controller, dispatch], [controller, dispatch]);
-
   return <SoftUI.Provider value={value}>{children}</SoftUI.Provider>;
 }
 
-// Soft UI Dashboard React custom hook for using context
 function useSoftUIController() {
   const context = useContext(SoftUI);
-
   if (!context) {
     throw new Error("useSoftUIController should be used inside the SoftUIControllerProvider.");
   }
-
   return context;
 }
 
-// Typechecking props for the SoftUIControllerProvider
 SoftUIControllerProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-// Context module functions
 const setMiniSidenav = (dispatch, value) => dispatch({ type: "MINI_SIDENAV", value });
 const setTransparentSidenav = (dispatch, value) => dispatch({ type: "TRANSPARENT_SIDENAV", value });
 const setSidenavColor = (dispatch, value) => dispatch({ type: "SIDENAV_COLOR", value });
@@ -92,6 +76,7 @@ const setFixedNavbar = (dispatch, value) => dispatch({ type: "FIXED_NAVBAR", val
 const setOpenConfigurator = (dispatch, value) => dispatch({ type: "OPEN_CONFIGURATOR", value });
 const setDirection = (dispatch, value) => dispatch({ type: "DIRECTION", value });
 const setLayout = (dispatch, value) => dispatch({ type: "LAYOUT", value });
+const setLoader = (dispatch, value) => dispatch({ type: "LOADER", value });
 
 export {
   SoftUIControllerProvider,
@@ -104,4 +89,5 @@ export {
   setOpenConfigurator,
   setDirection,
   setLayout,
+  setLoader
 };

@@ -12,7 +12,7 @@ import SoftTypography from "./components/SoftTypography";
 import colors from "./assets/theme/base/colors";
 import borders from "./assets/theme/base/borders";
 
-function OutlinedCounterCard({ color, count, title, prefix, suffix }) {
+function OutlinedCounterCard({ color="info", count, title, prefix="", suffix="" }) {
   const { secondary } = colors;
   const { borderWidth } = borders;
 
@@ -44,13 +44,6 @@ function OutlinedCounterCard({ color, count, title, prefix, suffix }) {
     </SoftBox>
   );
 }
-
-// Setting default values for the props of OutlinedCounterCard
-OutlinedCounterCard.defaultProps = {
-  color: "info",
-  prefix: "",
-  suffix: "",
-};
 
 // Typechecking props for the BlogCard
 OutlinedCounterCard.propTypes = {

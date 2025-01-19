@@ -16,7 +16,7 @@ import SoftTypography from "./components/SoftTypography";
 // PieChart configurations
 import configs from "./examples/Charts/PieChart/configs";
 
-function PieChart({ title, description, height, chart }) {
+function PieChart({ title="", description="", height="19.125rem", chart }) {
   const { data, options } = configs(chart.labels || [], chart.datasets || {});
 
   const renderChart = (
@@ -48,13 +48,6 @@ function PieChart({ title, description, height, chart }) {
 
   return title || description ? <Card>{renderChart}</Card> : renderChart;
 }
-
-// Setting default values for the props of PieChart
-PieChart.defaultProps = {
-  title: "",
-  description: "",
-  height: "19.125rem",
-};
 
 // Typechecking props for the PieChart
 PieChart.propTypes = {

@@ -19,7 +19,7 @@ import configs from "./examples/Charts/LineCharts/DefaultLineChart/configs";
 // Soft UI Dashboard React base styles
 import colors from "./assets/theme/base/colors";
 
-function DefaultLineChart({ title, description, height, chart }) {
+function DefaultLineChart({ title="", description="", height="19.125rem", chart }) {
   const chartDatasets = chart.datasets
     ? chart.datasets.map((dataset) => ({
         ...dataset,
@@ -67,13 +67,6 @@ function DefaultLineChart({ title, description, height, chart }) {
 
   return title || description ? <Card>{renderChart}</Card> : renderChart;
 }
-
-// Setting default values for the props of DefaultLineChart
-DefaultLineChart.defaultProps = {
-  title: "",
-  description: "",
-  height: "19.125rem",
-};
 
 // Typechecking props for the DefaultLineChart
 DefaultLineChart.propTypes = {

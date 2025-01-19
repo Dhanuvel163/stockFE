@@ -13,7 +13,7 @@ import SoftBox from "xfffSoftBox";
 import SoftTypography from "./components/SoftTypography";
 import SoftAvatar from "./components/SoftAvatar";
 
-function DefaultBlogCard({ image, category, title, description, author, action }) {
+function DefaultBlogCard({ image, category=false, title, description, author=false, action }) {
   return (
     <Card>
       <SoftBox mt={2} mx={2}>
@@ -84,12 +84,6 @@ function DefaultBlogCard({ image, category, title, description, author, action }
     </Card>
   );
 }
-
-// Setting default props for the DefaultBlogCard
-DefaultBlogCard.defaultProps = {
-  category: false,
-  author: false,
-};
 
 // Typechecking props for the DefaultBlogCard
 DefaultBlogCard.propTypes = {

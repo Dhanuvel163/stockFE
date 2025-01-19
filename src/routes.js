@@ -1,7 +1,6 @@
 /** 
   All of the routes for the Soft UI Dashboard React are added here,
   You can add a new route, customize the routes and delete the routes here.
-
   Once you add a new route on this file it will be visible automatically on
   the Sidenav.
 
@@ -23,9 +22,8 @@
 // Soft UI Dashboard React layouts
 import Dashboard from "./layouts/dashboard";
 import Tables from "./layouts/tables";
+import Brands from "./layouts/brands";
 import Billing from "./layouts/billing";
-import VirtualReality from "./layouts/virtual-reality";
-import RTL from "./layouts/rtl";
 import Profile from "./layouts/profile";
 import SignIn from "./layouts/authentication/sign-in";
 import SignUp from "./layouts/authentication/sign-up";
@@ -33,59 +31,114 @@ import SignUp from "./layouts/authentication/sign-up";
 // Soft UI Dashboard React icons
 import Shop from "./examples/Icons/Shop";
 import Office from "./examples/Icons/Office";
-import Settings from "./examples/Icons/Settings";
 import Document from "./examples/Icons/Document";
 import SpaceShip from "./examples/Icons/SpaceShip";
 import CustomerSupport from "./examples/Icons/CustomerSupport";
 import CreditCard from "./examples/Icons/CreditCard";
-import Cube from "./examples/Icons/Cube";
+import Salesman from "./layouts/salesman";
+import ShopPage from "./layouts/shop";
+import SuperStocker from "./layouts/superstocker";
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
+import Inventory2Icon from '@mui/icons-material/Inventory2';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import AppsIcon from '@mui/icons-material/Apps';
+import Products from "./layouts/products";
+import Purchase from "./layouts/purchase";
+import Shop2Icon from '@mui/icons-material/Shop2';
+import Sales from "./layouts/sales";
 
 const routes = [
+  // {
+  //   type: "collapse",
+  //   name: "Dashboard",
+  //   key: "dashboard",
+  //   privateroute: "/dashboard",
+  //   icon: <Shop size="12px" />,
+  //   component: <Dashboard />,
+  //   noCollapse: true,
+  // },
   {
     type: "collapse",
-    name: "Dashboard",
-    key: "dashboard",
-    route: "/dashboard",
-    icon: <Shop size="12px" />,
-    component: <Dashboard />,
+    name: "Brands",
+    key: "brands",
+    route: "/brands",
+    icon: <AccountTreeIcon size="12px" />,
+    component: <Brands />,
     noCollapse: true,
   },
   {
     type: "collapse",
-    name: "Tables",
-    key: "tables",
-    route: "/tables",
-    icon: <Office size="12px" />,
-    component: <Tables />,
+    name: "Salesman",
+    key: "salesman",
+    route: "/salesman",
+    icon: <DirectionsRunIcon size="12px" />,
+    component: <Salesman />,
     noCollapse: true,
   },
   {
     type: "collapse",
-    name: "Billing",
-    key: "billing",
-    route: "/billing",
-    icon: <CreditCard size="12px" />,
-    component: <Billing />,
+    name: "Shop",
+    key: "shop",
+    route: "/shop",
+    icon: <ShoppingBasketIcon size="12px" />,
+    component: <ShopPage />,
     noCollapse: true,
   },
   {
     type: "collapse",
-    name: "Virtual Reality",
-    key: "virtual-reality",
-    route: "/virtual-reality",
-    icon: <Cube size="12px" />,
-    component: <VirtualReality />,
+    name: "Super Stocker",
+    key: "super-stocker",
+    route: "/super-stocker",
+    icon: <Inventory2Icon size="12px" />,
+    component: <SuperStocker />,
     noCollapse: true,
   },
   {
     type: "collapse",
-    name: "RTL",
-    key: "rtl",
-    route: "/rtl",
-    icon: <Settings size="12px" />,
-    component: <RTL />,
+    name: "Products",
+    key: "products",
+    route: "/products",
+    icon: <AppsIcon size="12px" />,
+    component: <Products />,
     noCollapse: true,
   },
+  {
+    type: "collapse",
+    name: "Purchase",
+    key: "purchase",
+    route: "/purchase",
+    icon: <Shop2Icon size="12px" />,
+    component: <Purchase />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Sales",
+    key: "sales",
+    route: "/sales",
+    icon: <Shop2Icon size="12px" />,
+    component: <Sales />,
+    noCollapse: true,
+  },
+  // {
+  //   type: "collapse",
+  //   name: "Tables",
+  //   key: "tables",
+  //   route: "/tables",
+  //   icon: <Office size="12px" />,
+  //   component: <Tables />,
+  //   noCollapse: true,
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "Billing",
+  //   key: "billing",
+  //   route: "/billing",
+  //   icon: <CreditCard size="12px" />,
+  //   component: <Billing />,
+  //   noCollapse: true,
+  // },
   { type: "title", title: "Account Pages", key: "account-pages" },
   {
     type: "collapse",
@@ -100,7 +153,7 @@ const routes = [
     type: "collapse",
     name: "Sign In",
     key: "sign-in",
-    route: "/authentication/sign-in",
+    authprivateroute: "/authentication/sign-in",
     icon: <Document size="12px" />,
     component: <SignIn />,
     noCollapse: true,
@@ -109,7 +162,7 @@ const routes = [
     type: "collapse",
     name: "Sign Up",
     key: "sign-up",
-    route: "/authentication/sign-up",
+    authprivateroute: "/authentication/sign-up",
     icon: <SpaceShip size="12px" />,
     component: <SignUp />,
     noCollapse: true,

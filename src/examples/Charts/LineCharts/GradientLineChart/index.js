@@ -22,7 +22,7 @@ import configs from "../../../../examples/Charts/LineCharts/GradientLineChart/co
 // Soft UI Dashboard React base styles
 import colors from "../../../../assets/theme/base/colors";
 
-function GradientLineChart({ title, description, height, chart }) {
+function GradientLineChart({ title="", description="", height="19.125rem", chart }) {
   const chartRef = useRef(null);
   const [chartData, setChartData] = useState({});
   const { data, options } = chartData;
@@ -78,13 +78,6 @@ function GradientLineChart({ title, description, height, chart }) {
 
   return title || description ? <Card>{renderChart}</Card> : renderChart;
 }
-
-// Setting default values for the props of GradientLineChart
-GradientLineChart.defaultProps = {
-  title: "",
-  description: "",
-  height: "19.125rem",
-};
 
 // Typechecking props for the GradientLineChart
 GradientLineChart.propTypes = {

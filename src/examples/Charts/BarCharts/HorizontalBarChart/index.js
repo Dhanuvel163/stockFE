@@ -19,7 +19,7 @@ import configs from "./examples/Charts/BarCharts/HorizontalBarChart/configs";
 // Soft UI Dashboard React base styles
 import colors from "./assets/theme/base/colors";
 
-function HorizontalBarChart({ title, description, height, chart }) {
+function HorizontalBarChart({ title="", description="", height="19.125rem", chart }) {
   const chartDatasets = chart.datasets
     ? chart.datasets.map((dataset) => ({
         ...dataset,
@@ -65,13 +65,6 @@ function HorizontalBarChart({ title, description, height, chart }) {
 
   return title || description ? <Card>{renderChart}</Card> : renderChart;
 }
-
-// Setting default values for the props of HorizontalBarChart
-HorizontalBarChart.defaultProps = {
-  title: "",
-  description: "",
-  height: "19.125rem",
-};
 
 // Typechecking props for the HorizontalBarChart
 HorizontalBarChart.propTypes = {

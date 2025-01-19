@@ -15,7 +15,7 @@ import SoftTypography from "../../../../components/SoftTypography";
 import SoftButton from "../../../../components/SoftButton";
 import SoftAvatar from "../../../../components/SoftAvatar";
 
-function DefaultProjectCard({ image, label, title, description, action, authors }) {
+function DefaultProjectCard({ image, label, title, description, action, authors=[] }) {
   const renderAuthors = authors.map(({ image: media, name }) => (
     <Tooltip key={name} title={name} placement="bottom">
       <SoftAvatar
@@ -129,11 +129,6 @@ function DefaultProjectCard({ image, label, title, description, action, authors 
     </Card>
   );
 }
-
-// Setting default values for the props of DefaultProjectCard
-DefaultProjectCard.defaultProps = {
-  authors: [],
-};
 
 // Typechecking props for the DefaultProjectCard
 DefaultProjectCard.propTypes = {

@@ -11,7 +11,7 @@ import Icon from "@mui/material/Icon";
 import SoftBox from "../../../components/SoftBox";
 import SoftTypography from "../../../components/SoftTypography";
 
-function DefaultNavbarLink({ icon, name, route, light }) {
+function DefaultNavbarLink({ icon, name, route, light=false }) {
   return (
     <SoftBox
       component={Link}

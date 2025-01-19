@@ -13,7 +13,7 @@ import SoftTypography from "../../../components/SoftTypography";
 import curved14 from "../../../assets/images/curved-images/curved14.jpg";
 import masterCardLogo from "../../../assets/images/logos/mastercard.png";
 
-function MasterCard({ color, number, holder, expires }) {
+function MasterCard({ color="dark", number, holder, expires }) {
   const numbers = [...`${number}`];
 
   if (numbers.length < 16 || numbers.length > 16) {
@@ -85,11 +85,6 @@ function MasterCard({ color, number, holder, expires }) {
     </Card>
   );
 }
-
-// Setting default values for the props of MasterCard
-MasterCard.defaultProps = {
-  color: "dark",
-};
 
 // Typechecking props for the MasterCard
 MasterCard.propTypes = {
