@@ -11,3 +11,31 @@
   z-index: 11001 !important;
   font-weight: 500;
 }
+
+@media print {
+  @page { size: landscape; }
+}
+
+@media print and (color) {
+  * {
+     -webkit-print-color-adjust: exact;
+     print-color-adjust: exact;
+         
+  }
+}
+
+.tableText{
+  font-size: 14px;
+  color: black;
+}
+.tableTitle{
+  font-weight: bold;
+  color: black;
+  font-size: 16px;
+  line-height: 16px;
+  text-transform: uppercase;
+}
+.tableLabel{
+  width: 80px;
+  display: inline-block;
+}

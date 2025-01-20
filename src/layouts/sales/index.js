@@ -15,6 +15,8 @@ import SalesConfigurator from "./Sidebar";
 import SoftInput from "../../components/SoftInput";
 import Select from 'react-select'
 import moment from 'moment'
+import { Icon, Modal } from "@mui/material";
+import Bill from "./Sidebar/Bill";
 
 
 function Sales() {
@@ -26,6 +28,8 @@ function Sales() {
   const [openErrorSnackbar, closeErrorSnackbar] = useSnackbar(error)
   const [openSuccessSnackbar, closeSuccessSnackbar] = useSnackbar(success)
   const [salesSearch,setSalesSearch] = useState({shop:null,sales_date:null,salesman:null})
+  const [billModal, setBillModal] = useState(false)
+  const [billData, setBillData] = useState(null)
 
   const onSubmit = async(data) => {
     setLoader(dispatch, true);
@@ -165,6 +169,7 @@ function Sales() {
                   { name: "salesman", align: "center" },
                   { name: "products(count)", align: "center" },
                   { name: "total amount", align: "center" },
+                  { name: "view bill", align: "center" },
                   // { name: "edit", align: "center" },
                   // { name: "delete", align: "center" },
                 ]} 
@@ -195,6 +200,11 @@ function Sales() {
                         {sale.net_total_sell_rate}
                       </SoftTypography>
                     ),
+                    "view bill": (
+                      <SoftButton variant="outlined" color="info" fontWeight="medium" size="small" onClick={()=>{setBillData(sale);setBillModal(true)}}>
+                        <Icon>eye</Icon>&nbsp;View Bill
+                      </SoftButton>
+                    ),
                     // edit: (
                     //   <SoftButton variant="outlined" color="info" fontWeight="medium" size="small" onClick={()=>handleEditClick(ss)}>
                     //     <Icon>edit</Icon>&nbsp;Edit
@@ -214,6 +224,11 @@ function Sales() {
       </SoftBox>
       <SalesConfigurator isOpen={drawer} onSubmit={onSubmit} drawerData={drawerData}
         handleClose={()=>{setDrawer(false);setDrawerData({isEdit:false,data:null})}}/>
+      <Modal open={billModal} onClose={()=>{setBillModal(false);setBillData(null)}}>
+        <SoftBox>
+          <Bill data={billData} onClose={()=>{setBillModal(false);setBillData(null)}}/>
+        </SoftBox>
+      </Modal>
     </DashboardLayout>
   );
 }
