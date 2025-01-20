@@ -285,7 +285,7 @@ function SalesConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
                     <SoftTypography component="label" variant="caption" fontWeight="bold">CGST Percent</SoftTypography>
                   </SoftBox>
                   <Controller control={control} name={`products.${selectedProduct._id}.sell_cgst_percent`}
-                    rules={{ required: "CGST Percent is required", min: {value:0, message: "Min value allowed is 0"},max: {value:100, message: "Max value allowed is 100"} }}
+                    rules={{ required: "CGST Percent is required", min: {value:0, message: "Min value allowed is 0"},max: {value:9, message: "Max value allowed is 9"} }}
                     render={({ field }) => (
                       <SoftInput {...field} type="number" placeholder="CGST Percent" inputProps={{step: "any"}} error={!!errors?.products?.[selectedProduct._id]?.sell_cgst_percent}
                         value={field.value || ''}
@@ -295,7 +295,7 @@ function SalesConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
                           const sgst_percent = products[selectedProduct._id]?.sell_sgst_percent
                           const rate = products[selectedProduct._id]?.sell_rate
                           const units = products[selectedProduct._id]?.sell_units
-                          if(sgst_percent && rate && value){
+                          if(sgst_percent && rate && (value || value==0)){
                             const sell_rate_with_gst = bigDecimal.add(
                               (bigDecimal.add(parseFloat(rate),(rate*(bigDecimal.divide(value,100))))),
                               (rate*(bigDecimal.divide(sgst_percent,100)))
@@ -318,7 +318,7 @@ function SalesConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
                     <SoftTypography component="label" variant="caption" fontWeight="bold">SGST Percent</SoftTypography>
                   </SoftBox>
                   <Controller control={control} name={`products.${selectedProduct._id}.sell_sgst_percent`}
-                    rules={{ required: "SGST Percent is required", min: {value:0, message: "Min value allowed is 0"},max: {value:100, message: "Max value allowed is 100"} }}
+                    rules={{ required: "SGST Percent is required", min: {value:0, message: "Min value allowed is 0"},max: {value:9, message: "Max value allowed is 9"} }}
                     render={({ field }) => (
                       <SoftInput {...field} type="number" placeholder="SGST Percent" inputProps={{step: "any"}} error={!!errors?.products?.[selectedProduct._id]?.sell_sgst_percent}
                         value={field.value || ''}
@@ -328,7 +328,7 @@ function SalesConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
                           const cgst_percent = products[selectedProduct._id]?.sell_cgst_percent
                           const rate = products[selectedProduct._id]?.sell_rate
                           const units = products[selectedProduct._id]?.sell_units
-                          if(cgst_percent && rate && value){
+                          if(cgst_percent && rate && (value || value==0)){
                             const sell_rate_with_gst = bigDecimal.add(
                               (bigDecimal.add(parseFloat(rate), (rate*(bigDecimal.divide(cgst_percent,100))))),
                               (rate*(bigDecimal.divide(value,100)))

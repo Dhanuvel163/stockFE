@@ -55,7 +55,7 @@ function ProductConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,da
             <SoftTypography component="label" variant="caption" fontWeight="bold">Name</SoftTypography>
           </SoftBox>
           <SoftInput type="text" placeholder="Name"
-            {...register("name", { required: "Name is required" })} 
+            {...register("name", { required: "Name is required", maxLength: { value: 200, message: "Max allowed characters is 200" } })} 
             error={!!errors.name}/>
           <SoftTypography color="error" fontSize={10} mt={1}>
             <span>{errors.name?.message}</span>
@@ -135,14 +135,14 @@ function ProductConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,da
             <SoftTypography component="label" variant="caption" fontWeight="bold">CGST Percent</SoftTypography>
           </SoftBox>
           <Controller control={control} name="cgst_percent"
-            rules={{ required: "CGST Percent is required", min: {value:0, message: "Min value allowed is 0"}, max: {value:100, message: "Max value allowed is 100"} }}
+            rules={{ required: "CGST Percent is required", min: {value:0, message: "Min value allowed is 0"}, max: {value:9, message: "Max value allowed is 9"} }}
             render={({ field }) => (
               <SoftInput {...field} type="number" placeholder="CGST Percent" inputProps={{step: "any"}} error={!!errors.cgst_percent}
                 value={field.value || ''}
                 onChange={(e)=>{
                   const value = parseFloat(e.target.value)
                   let {sgst_percent,rate_with_gst,rate} = getValues()
-                  if(sgst_percent && rate && value){
+                  if(sgst_percent && rate && (value || value==0)){
                     rate_with_gst = bigDecimal.add(
                       (bigDecimal.add(parseFloat(rate),(rate*(bigDecimal.divide(value,100))))),
                       (rate*(bigDecimal.divide(sgst_percent,100)))
@@ -162,14 +162,14 @@ function ProductConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,da
             <SoftTypography component="label" variant="caption" fontWeight="bold">SGST Percent</SoftTypography>
           </SoftBox>
           <Controller control={control} name="sgst_percent"
-            rules={{ required: "SGST Percent is required", min: {value:0, message: "Min value allowed is 0"}, max: {value:100, message: "Max value allowed is 100"} }}
+            rules={{ required: "SGST Percent is required", min: {value:0, message: "Min value allowed is 0"}, max: {value:9, message: "Max value allowed is 9"} }}
             render={({ field }) => (
               <SoftInput {...field} type="number" placeholder="SGST Percent" inputProps={{step: "any"}} error={!!errors.sgst_percent}
                 value={field.value || ''}
                 onChange={(e)=>{
                   const value = parseFloat(e.target.value)
                   let {cgst_percent,rate_with_gst,rate} = getValues()
-                  if(cgst_percent && rate && value){
+                  if(cgst_percent && rate && (value || value==0)){
                     rate_with_gst = bigDecimal.add(
                       (bigDecimal.add(parseFloat(rate), (rate*(bigDecimal.divide(cgst_percent,100))))),
                       (rate*(bigDecimal.divide(value,100)))
