@@ -36,7 +36,7 @@ function BrandConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,data
             <SoftTypography component="label" variant="caption" fontWeight="bold">Brand Name</SoftTypography>
           </SoftBox>
           <SoftInput type="text" placeholder="Brand Name"
-            {...register("name", { required: "Brand name is required" })} 
+            {...register("name", { required: "Brand name is required", maxLength: { value: 200, message: "Max allowed characters is 200" } })} 
             error={!!errors.name}/>
           <SoftTypography color="error" fontSize={10} mt={1}>
             <span>{errors.name?.message}</span>

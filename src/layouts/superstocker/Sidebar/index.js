@@ -37,7 +37,7 @@ function SuperStockerConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEd
             <SoftTypography component="label" variant="caption" fontWeight="bold">Name</SoftTypography>
           </SoftBox>
           <SoftInput type="text" placeholder="Name"
-            {...register("name", { required: "Name is required" })} 
+            {...register("name", { required: "Name is required", maxLength: { value: 200, message: "Max allowed characters is 200" } })} 
             error={!!errors.name}/>
           <SoftTypography color="error" fontSize={10} mt={1}>
             <span>{errors.name?.message}</span>

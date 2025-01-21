@@ -47,6 +47,7 @@ import Products from "./layouts/products";
 import Purchase from "./layouts/purchase";
 import Shop2Icon from '@mui/icons-material/Shop2';
 import Sales from "./layouts/sales";
+import SellIcon from '@mui/icons-material/Sell';
 
 const routes = [
   // {
@@ -117,7 +118,7 @@ const routes = [
     name: "Sales",
     key: "sales",
     route: "/sales",
-    icon: <Shop2Icon size="12px" />,
+    icon: <SellIcon size="12px" />,
     component: <Sales />,
     noCollapse: true,
   },
@@ -140,15 +141,16 @@ const routes = [
   //   noCollapse: true,
   // },
   { type: "title", title: "Account Pages", key: "account-pages" },
-  {
-    type: "collapse",
-    name: "Profile",
-    key: "profile",
-    route: "/profile",
-    icon: <CustomerSupport size="12px" />,
-    component: <Profile />,
-    noCollapse: true,
-  },
+  { type: "logout", title: "Logout", key: "logout" },
+  // {
+  //   type: "collapse",
+  //   name: "Profile",
+  //   key: "profile",
+  //   route: "/profile",
+  //   icon: <CustomerSupport size="12px" />,
+  //   component: <Profile />,
+  //   noCollapse: true,
+  // },
   {
     type: "collapse",
     name: "Sign In",

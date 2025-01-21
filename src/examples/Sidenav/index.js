@@ -11,7 +11,8 @@ import SidenavCollapse from "../../examples/Sidenav/SidenavCollapse";
 import SidenavRoot from "../../examples/Sidenav/SidenavRoot";
 import sidenavLogoLabel from "../../examples/Sidenav/styles/sidenav";
 import { useSoftUIController, setMiniSidenav } from "../../context";
-import { useUserController } from "../../context/user";
+import { useUserController, setLogout } from "../../context/user";
+import { useNavigate } from "react-router-dom";
 
 function Sidenav({ color="info", brand="", brandName, routes, ...rest }) {
   const [controller, dispatch] = useSoftUIController();
@@ -21,6 +22,7 @@ function Sidenav({ color="info", brand="", brandName, routes, ...rest }) {
   const location = useLocation();
   const { pathname } = location;
   const collapseName = pathname.split("/").slice(1)[0];
+  const navigate = useNavigate();
 
   const closeSidenav = () => setMiniSidenav(dispatch, true);
 
@@ -60,6 +62,11 @@ function Sidenav({ color="info", brand="", brandName, routes, ...rest }) {
       );
     } else if (type === "divider") {
       returnValue = <Divider key={key} />;
+    } else if (type === "logout") {
+      returnValue = (
+        <SidenavCollapse color={color} key={key} name={title} icon={<Icon>lock</Icon>} active={key === collapseName} 
+        noCollapse={noCollapse} onClick={()=>{setLogout(userDispatch);navigate("/authentication/sign-in");}}/>
+      )
     }
     return returnValue;
   });

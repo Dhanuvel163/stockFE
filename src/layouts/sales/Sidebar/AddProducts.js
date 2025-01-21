@@ -53,7 +53,7 @@ function AddProducts({setProductModal,handleSubmit=()=>{}}) {
 
     return(
         <SoftBox alignItems="center" justifyContent="center" display="flex" height="100vh">
-            <SoftBox p={2} width="80vw" maxHeight="80vw" overflow="auto" bgColor="white" borderRadius="8px">
+            <SoftBox p={2} width="80vw" maxHeight="80vh" overflow="auto" bgColor="white" borderRadius="8px">
                 <SoftBox display="flex" justifyContent="space-between" alignItems="baseline" pb={0.8} px={3}>
                     <SoftBox><SoftTypography variant="h5">Add Products</SoftTypography></SoftBox>
                     <Icon sx={({ typography: { size, fontWeightBold }, palette: { dark } }) => ({ fontSize: `${size.md} !important`, fontWeight: `${fontWeightBold} !important`, stroke: dark.main, strokeWidth: "2px", cursor: "pointer", mt: 2})}
