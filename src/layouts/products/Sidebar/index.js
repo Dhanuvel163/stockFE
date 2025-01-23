@@ -195,7 +195,7 @@ function ProductConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,da
                 value={field.value || ''}
                 onChange={(e)=>{
                   const value = parseFloat(e.target.value)
-                  let {cgst_percent,sgst_percent,rate} = getValues()
+                  let {cgst_percent,sgst_percent,rate,profit_percent} = getValues()
                   if(cgst_percent && sgst_percent && value){
                     rate = bigDecimal.divide(
                       value,
@@ -206,6 +206,10 @@ function ProductConfigurator({isOpen,handleClose,onSubmit, drawerData:{isEdit,da
                       ))
                     )
                     setValue('rate',rate)
+                  }
+                  if(profit_percent && value){
+                    const sell_rate = bigDecimal.add(parseFloat(value),(value*(bigDecimal.divide(profit_percent,100))))
+                    setSellRate(sell_rate)
                   }
                   field.onChange(e)
                 }}/>

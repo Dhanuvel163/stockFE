@@ -129,7 +129,7 @@ function SignUp() {
               <Grid item xs={12} lg={6}>
                 <SoftBox>
                   <SoftInput type="password" placeholder="Password" 
-                    {...register("password", { required: "Password is required", pattern: {value:/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, message:"Password should contain minimum eight characters, at least one letter & one number"} })} 
+                    {...register("password", { required: "Password is required", pattern: {value:/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z!@#$%^&*()~_+-/.,"'|;\d]{8,}$/, message:"Password should contain minimum eight characters, at least one letter & one number"} })} 
                     error={!!errors.password}/>
                   <SoftTypography color="error" fontSize={10} mt={1}>
                     <span>{errors.password?.message}</span>
