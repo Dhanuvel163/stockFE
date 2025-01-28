@@ -6,16 +6,42 @@ import SoftButton from "../../../components/SoftButton";
 import { useReactToPrint } from "react-to-print";
 import { useEffect, useRef, useState } from "react";
 import moment from "moment";
+import { v4 as uuidv4 } from "uuid";
 
 function Bill({data,onClose}) {
     const contentRef = useRef(null);
-    const reactToPrintFn = useReactToPrint({ contentRef });
-    const [productArray,setProductsArray] = useState([])
+    const [isPrinting, setIsPrinting] = useState(false);
+    const promiseResolveRef = useRef(null);
+    const reactToPrintFn = useReactToPrint({ 
+        contentRef: contentRef,
+        onBeforePrint: () => new Promise((resolve) => { promiseResolveRef.current = resolve; setIsPrinting(true) }),
+        onAfterPrint: () => { promiseResolveRef.current = null; setIsPrinting(false) }
+     });
+    const [productSplit,setProductSplit] = useState([])
+    const [indexMap,setIndexMap] = useState({})
+
+    useEffect(() => {
+        if (isPrinting && promiseResolveRef.current) promiseResolveRef.current();
+    }, [isPrinting]);
+
     useEffect(()=>{
-        const length = Math.max(data?.products.length,8)
-        setProductsArray([...Array(length).keys()]
-    )
+        const chunkSize = 8;
+        const split = []
+        for (let i = 0; i < data?.products?.length; i += chunkSize) {
+            const chunk = data?.products?.slice(i, i + chunkSize);
+            split.push(chunk)
+        }
+        setProductSplit(split)
+        setIndexMap(()=>{
+            console.log({data})
+            const map = {}
+            data?.products.forEach((product,i) => {
+                map[product?._id] = i+1
+            });
+            setIndexMap(map)
+        })
     },[data])
+
     return(
         <SoftBox alignItems="center" justifyContent="center" display="flex" height="100vh">
             <SoftBox width="80vw" maxHeight="80vh" overflow="auto" bgColor="white" borderRadius="8px">
@@ -27,10 +53,23 @@ function Bill({data,onClose}) {
                     </Icon>
                 </SoftBox>
                 <Divider/>
-                <SoftBox ref={contentRef} p={2}>
+                <SoftBox p={2}>
                     <BillHeader data={data}/>
-                    <BillTable productArray={productArray} data={data}/>
-                    <BillFooter data={data}/>
+                    <BillTable products={data?.products} indexMap={indexMap} isPrintTable={false}/>
+                    <BillFooter data={data} isLastBill={true}/>
+                </SoftBox>
+                <SoftBox display="none">
+                    <SoftBox ref={contentRef}>
+                        {
+                            productSplit.map((products,index)=>(
+                                <SoftBox key={uuidv4()} style={{pageBreakInside:'avoid'}} p={2}>
+                                    <BillHeader data={data}/>
+                                    <BillTable products={products} indexMap={indexMap}/>
+                                    <BillFooter data={data} isLastBill={index==(productSplit.length-1)}/>
+                                </SoftBox>
+                            ))
+                        }
+                    </SoftBox>
                 </SoftBox>
                 <SoftBox mt={2} display="flex" justifyContent="end" p={2}>
                     <SoftButton shadow={"true"} color="info" variant="gradient" onClick={() => reactToPrintFn()}>
@@ -83,29 +122,43 @@ const BillHeader = ({data}) => {
     )
 }
 
-const BillFooter = ({data}) => {
+const BillFooter = ({data,isLastBill}) => {
     return (
         <div style={{display:'grid', gridTemplateColumns:'repeat(3, minmax(0, 1fr))',border:'1px solid black'}}>
             <div style={{borderRight:'1px solid black', paddingBottom:15, paddingLeft:10, paddingRight:10, paddingTop:10}}>
+            {
+                isLastBill &&
+                <p variant="p" className="tableText">
+                    <span className="tableLabel">Total Qty</span>: {data.products?.reduce((prev,prod)=>prev+(prod.sell_units || 0)+(prod.sell_free_units || 0),0)}
+                </p>
+            }
             </div>
             <div style={{borderRight:'1px solid black', paddingBottom:15, paddingLeft:10, paddingRight:10, paddingTop:10}}>
             </div>
             <div style={{paddingBottom:15, paddingLeft:10, paddingRight:10, paddingTop:10}}>
-                <p variant="p" className="tableText">
-                    <span className="tableLabel">Amount</span>: {data.total_sell_rate}
-                </p>
-                <p variant="p" className="tableText">
-                    <span className="tableLabel">Discount</span>: {data.total_discount || 0}
-                </p>
-                <p variant="p" className="tableText">
-                    <span className="tableLabel">Grand Total</span>: {data.net_total_sell_rate}
-                </p>
+                <SoftBox style={{height:67}}>
+                    {
+                        isLastBill &&
+                        <>
+                            <p variant="p" className="tableText">
+                                <span className="tableLabel">Amount</span>: {data.total_sell_rate}
+                            </p>
+                            <p variant="p" className="tableText">
+                                <span className="tableLabel">Discount</span>: {data.total_discount || 0}
+                            </p>
+                            <p variant="p" className="tableText">
+                                <span className="tableLabel">Grand Total</span>: {data.net_total_sell_rate}
+                            </p>
+                        </>
+                    }
+                </SoftBox>
             </div>
         </div>
     )
 }
 
-const BillTable = ({productArray,data}) => {
+const BillTable = ({products,indexMap,isPrintTable=true}) => {
+    const productArray = [...Array(8).keys()]
     return (
         <Table
             columns={[
@@ -121,12 +174,12 @@ const BillTable = ({productArray,data}) => {
                 { name: "free units", align: "center" },
                 { name: "amount", align: "center" },
             ]} 
-            rows={productArray?.map((_,i)=>{
-                const product = data?.products?.[i] || {};
+            rows={(isPrintTable ? productArray : products)?.map((_,i)=>{
+                const product = products?.[i] || {};
                 return {
                     "s no": (
                         <SoftTypography variant="caption" color="dark">
-                            {(product?.product) ? (i+1) : ""}
+                            {(product?.product) ? (indexMap[product?.product?._id]) : ""}
                         </SoftTypography>
                     ),
                     product: (
