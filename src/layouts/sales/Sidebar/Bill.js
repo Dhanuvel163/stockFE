@@ -166,12 +166,13 @@ const BillTable = ({products,indexMap,isPrintTable=true}) => {
                 { name: "product", align: "center" },
                 { name: "hsn code", align: "center" },
                 { name: "mrp", align: "center" },
+                { name: "qty", align: "center" },
+                { name: "f qty", align: "center" },
                 { name: "rate", align: "center" },
-                { name: "cgst", align: "center" },
-                { name: "sgst", align: "center" },
-                { name: "rate with gst", align: "center" },
-                { name: "units", align: "center" },
-                { name: "free units", align: "center" },
+                { name: "dis%", align: "center" },
+                { name: "c.dis", align: "center" },
+                { name: "gst%", align: "center" },
+                { name: "net rate", align: "center" },
                 { name: "amount", align: "center" },
             ]} 
             rows={(isPrintTable ? productArray : products)?.map((_,i)=>{
@@ -197,40 +198,41 @@ const BillTable = ({products,indexMap,isPrintTable=true}) => {
                         {product?.sell_mrp || ""}
                     </SoftTypography>
                     ),
+                    qty: (
+                        <SoftTypography variant="caption" color="dark">
+                            {product?.sell_units || ""}
+                        </SoftTypography>
+                        ),
+                    "f qty": (
+                        <SoftTypography variant="caption" color="dark">
+                            {product?.sell_free_units || ""}
+                        </SoftTypography>
+                    ),
                     rate: (
-                    <SoftTypography variant="caption" color="dark">
-                        {product?.sell_rate || ""}
-                    </SoftTypography>
+                        <SoftTypography variant="caption" color="dark">
+                            {(product?.sell_rate) ? (parseFloat(product?.sell_rate).toFixed(2)) : ""}
+                        </SoftTypography>
                     ),
-                    cgst: (
-                    <SoftTypography variant="caption" color="dark">
-                        {product?.sell_cgst_percent || ""}
-                    </SoftTypography>
+                    "dis%": (
+                        <SoftTypography variant="caption" color="dark"></SoftTypography>
                     ),
-                    sgst: (
-                    <SoftTypography variant="caption" color="dark">
-                        {product?.sell_sgst_percent || ""}
-                    </SoftTypography>
+                    "c.dis": (
+                        <SoftTypography variant="caption" color="dark"></SoftTypography>
                     ),
-                    "rate with gst": (
-                    <SoftTypography variant="caption" color="dark">
-                        {product?.sell_rate_with_gst || ""}
-                    </SoftTypography>
+                    "gst%": (
+                        <SoftTypography variant="caption" color="dark">
+                            {(product?.sell_cgst_percent + product?.sell_sgst_percent) || ""}
+                        </SoftTypography>
                     ),
-                    units: (
-                    <SoftTypography variant="caption" color="dark">
-                        {product?.sell_units || ""}
-                    </SoftTypography>
-                    ),
-                    "free units": (
-                    <SoftTypography variant="caption" color="dark">
-                        {product?.sell_free_units || ""}
-                    </SoftTypography>
+                    "net rate": (
+                        <SoftTypography variant="caption" color="dark">
+                            {(product?.sell_rate_with_gst) ? (parseFloat(product?.sell_rate_with_gst).toFixed(2)) : ""}
+                        </SoftTypography>
                     ),
                     amount: (
-                    <SoftTypography variant="caption" color="dark">
-                        {product?.total_sell_rate || ""}
-                    </SoftTypography>
+                        <SoftTypography variant="caption" color="dark">
+                            {(product?.total_sell_rate) ? (parseFloat(product?.total_sell_rate).toFixed(2)) : ""}
+                        </SoftTypography>
                     ),
                     hasBorder: true
                 }
