@@ -25,8 +25,10 @@ function Table({ columns=[], rows=[{}] }) {
     else{pl = 1; pr = 1;}
     return (
       <SoftBox
-        key={name} component="th" width={width || "auto"} pt={1.5} pb={1.25} pl={align === "left" ? pl : 3} 
-        pr={align === "right" ? pr : 3} textAlign={align} fontSize={size.xxs} fontWeight={fontWeightBold}
+        key={name} component="th" width={width || "auto"} pt={"5px"} pb={"5px"} 
+        // pl={align === "left" ? pl : 3} 
+        // pr={align === "right" ? pr : 3} 
+        textAlign={align} fontSize={size.xxs} fontWeight={fontWeightBold}
         color="dark" border={`${borderWidth[1]} solid black`}>
         {name.toUpperCase()}
       </SoftBox>
@@ -39,7 +41,7 @@ function Table({ columns=[], rows=[{}] }) {
       let template;
       if (Array.isArray(row[name])) {
         template = (
-          <SoftBox key={uuidv4()} component="td" p={1} 
+          <SoftBox key={uuidv4()} component="td"
             // borderBottom={row.hasBorder ? `${borderWidth[1]} solid black` : null}
             borderLeft={row.hasBorder ? `${borderWidth[1]} solid black` : null}
             borderRight={row.hasBorder ? `${borderWidth[1]} solid black` : null}>
@@ -55,11 +57,14 @@ function Table({ columns=[], rows=[{}] }) {
         );
       } else {
         template = (
-          <SoftBox key={uuidv4()} component="td" p={1} textAlign={align} 
+          <SoftBox key={uuidv4()} component="td" textAlign={align} 
             // borderBottom={row.hasBorder ? `${borderWidth[1]} solid black` : null}
             borderLeft={row.hasBorder ? `${borderWidth[1]} solid black` : null}
             borderRight={row.hasBorder ? `${borderWidth[1]} solid black` : null}>
-            <SoftTypography variant="button" fontWeight="regular" color="secondary" sx={{ display: "inline-block", width: "max-content" }}>
+            <SoftTypography variant="caption" fontWeight="regular" color="dark" 
+              lineHeight="0.2px"
+              sx={{ display: "inline-block", width: "max-content" }}
+            >
               {row[name]}
             </SoftTypography>
           </SoftBox>

@@ -84,7 +84,7 @@ function Bill({data,onClose}) {
 const BillHeader = ({data}) => {
     return (
         <div style={{display:'grid', gridTemplateColumns:'repeat(3, minmax(0, 1fr))',border:'1px solid black', borderBottom:0}}>
-            <div style={{borderRight:'1px solid black', paddingBottom:15, paddingLeft:10, paddingRight:10, paddingTop:10}}>
+            <div style={{borderRight:'1px solid black', padding:8}}>
                 <h3 className="tableTitle">{data.organization?.name}</h3>
                 <p variant="p" className="tableText">{data.organization?.address}</p>
                 <p variant="p" className="tableText">
@@ -97,7 +97,7 @@ const BillHeader = ({data}) => {
                     <span style={{width:92, display:'inline-block'}}>Drug License</span>: {data.organization?.food_license_no} {data.organization?.drug_license_no ? `& ${data.organization?.drug_license_no}` : ''}
                 </p>
             </div>
-            <div style={{borderRight:'1px solid black', paddingBottom:15, paddingLeft:10, paddingRight:10, paddingTop:10}}>
+            <div style={{borderRight:'1px solid black', padding:8}}>
                 <p variant="p" className="tableText">Buyer Details</p>
                 <h3 className="tableTitle">{data.shop?.name}</h3>
                 <p variant="p" className="tableText">{data.shop?.address}</p>
@@ -108,7 +108,7 @@ const BillHeader = ({data}) => {
                     <span style={{width:72, display:'inline-block'}}>Mobile No</span>: {data.shop?.contact}
                 </p>
             </div>
-            <div style={{paddingBottom:15, paddingLeft:10, paddingRight:10, paddingTop:10}}>
+            <div style={{padding:8}}>
                 <h3 className="tableTitle">TAX INVOICE</h3>
                 <p variant="p" className="tableText">{data.organization?.address}</p>
                 <p variant="p" className="tableText">
@@ -125,7 +125,7 @@ const BillHeader = ({data}) => {
 const BillFooter = ({data,isLastBill}) => {
     return (
         <div style={{display:'grid', gridTemplateColumns:'repeat(3, minmax(0, 1fr))',border:'1px solid black'}}>
-            <div style={{borderRight:'1px solid black', paddingBottom:15, paddingLeft:10, paddingRight:10, paddingTop:10}}>
+            <div style={{borderRight:'1px solid black', padding:8}}>
             {
                 isLastBill &&
                 <p variant="p" className="tableText">
@@ -133,9 +133,9 @@ const BillFooter = ({data,isLastBill}) => {
                 </p>
             }
             </div>
-            <div style={{borderRight:'1px solid black', paddingBottom:15, paddingLeft:10, paddingRight:10, paddingTop:10}}>
+            <div style={{borderRight:'1px solid black', padding:8}}>
             </div>
-            <div style={{paddingBottom:15, paddingLeft:10, paddingRight:10, paddingTop:10}}>
+            <div style={{padding:8}}>
                 <SoftBox style={{height:67}}>
                     {
                         isLastBill &&
@@ -178,62 +178,18 @@ const BillTable = ({products,indexMap,isPrintTable=true}) => {
             rows={(isPrintTable ? productArray : products)?.map((_,i)=>{
                 const product = products?.[i] || {};
                 return {
-                    "s no": (
-                        <SoftTypography variant="caption" color="dark">
-                            {(product?.product) ? (indexMap[product?.product?._id]) : ""}
-                        </SoftTypography>
-                    ),
-                    product: (
-                    <SoftTypography variant="caption" color="dark">
-                        {product?.product?.name || ""}
-                    </SoftTypography>
-                    ),
-                    "hsn code": (
-                        <SoftTypography variant="caption" color="dark">
-                            {product?.product?.hsn_code || ""}
-                        </SoftTypography>
-                    ),
-                    mrp: (
-                    <SoftTypography variant="caption" color="dark">
-                        {product?.sell_mrp || ""}
-                    </SoftTypography>
-                    ),
-                    qty: (
-                        <SoftTypography variant="caption" color="dark">
-                            {product?.sell_units || ""}
-                        </SoftTypography>
-                        ),
-                    "f qty": (
-                        <SoftTypography variant="caption" color="dark">
-                            {product?.sell_free_units || ""}
-                        </SoftTypography>
-                    ),
-                    rate: (
-                        <SoftTypography variant="caption" color="dark">
-                            {(product?.sell_rate) ? (parseFloat(product?.sell_rate).toFixed(2)) : ""}
-                        </SoftTypography>
-                    ),
-                    "dis%": (
-                        <SoftTypography variant="caption" color="dark"></SoftTypography>
-                    ),
-                    "c.dis": (
-                        <SoftTypography variant="caption" color="dark"></SoftTypography>
-                    ),
-                    "gst%": (
-                        <SoftTypography variant="caption" color="dark">
-                            {(product?.sell_cgst_percent + product?.sell_sgst_percent) || ""}
-                        </SoftTypography>
-                    ),
-                    "net rate": (
-                        <SoftTypography variant="caption" color="dark">
-                            {(product?.sell_rate_with_gst) ? (parseFloat(product?.sell_rate_with_gst).toFixed(2)) : ""}
-                        </SoftTypography>
-                    ),
-                    amount: (
-                        <SoftTypography variant="caption" color="dark">
-                            {(product?.total_sell_rate) ? (parseFloat(product?.total_sell_rate).toFixed(2)) : ""}
-                        </SoftTypography>
-                    ),
+                    "s no": (product?.product) ? (indexMap[product?.product?._id]) : "",
+                    product: product?.product?.name || "",
+                    "hsn code": product?.product?.hsn_code || "",
+                    mrp: product?.sell_mrp || "",
+                    qty: product?.sell_units || "",
+                    "f qty": product?.sell_free_units || "",
+                    rate: (product?.sell_rate) ? (parseFloat(product?.sell_rate).toFixed(2)) : "",
+                    "dis%": (""),
+                    "c.dis": (""),
+                    "gst%": (product?.sell_cgst_percent + product?.sell_sgst_percent) || "",
+                    "net rate": (product?.sell_rate_with_gst) ? (parseFloat(product?.sell_rate_with_gst).toFixed(2)) : "",
+                    amount: (product?.total_sell_rate) ? (parseFloat(product?.total_sell_rate).toFixed(2)) : "",
                     hasBorder: true
                 }
             })} 

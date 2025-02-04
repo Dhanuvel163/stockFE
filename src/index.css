@@ -25,14 +25,14 @@
 }
 
 .tableText{
-  font-size: 14px;
+  font-size: 12px;
   color: black;
 }
 .tableTitle{
   font-weight: bold;
   color: black;
-  font-size: 16px;
-  line-height: 16px;
+  font-size: 14px;
+  line-height: 14px;
   text-transform: uppercase;
 }
 .tableLabel{
