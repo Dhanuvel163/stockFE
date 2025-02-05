@@ -57,7 +57,8 @@ function Table({ columns=[], rows=[{}] }) {
       } else {
         template = (
           <SoftBox key={uuidv4()} component="td" p={1} textAlign={align} borderBottom={row.hasBorder ? `${borderWidth[1]} solid ${light.main}` : null}>
-            <SoftTypography variant="button" fontWeight="regular" color="secondary" sx={{ display: "inline-block", width: "max-content" }}>
+            <SoftTypography variant="button" fontWeight="regular" color="secondary" sx={{ display: "inline-block", width: "max-content" }}
+              style={{maxWidth:400}}>
               {row[name]}
             </SoftTypography>
           </SoftBox>
